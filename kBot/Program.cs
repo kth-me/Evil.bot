@@ -6,7 +6,7 @@ namespace kBot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello there!");
+            Console.WriteLine(Utilities.GetAlert("TEST"));
         }
     }
 }
