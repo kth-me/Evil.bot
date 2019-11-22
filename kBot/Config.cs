@@ -1,31 +1,33 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace kBot
 {
     class Config
     {
-        private const string configFolder = "Resources";
+        private const string dataFolder = "Data";
         private const string configFile = "config.json";
 
         public static BotConfig bot;
 
         static Config()
         {
-            if (!Directory.Exists(configFolder))
+            if (!Directory.Exists(dataFolder))
             {
-                Directory.CreateDirectory(configFolder);
+                Directory.CreateDirectory(dataFolder);
             }
 
-            if (!File.Exists(configFolder + "/" + configFile))
+            if (!File.Exists(dataFolder + "/" + configFile))
             {
                 bot = new BotConfig();
                 string json = JsonConvert.SerializeObject(bot, Formatting.Indented);
-                File.WriteAllText(configFolder + "/" + configFile, json);
+                File.WriteAllText(dataFolder + "/" + configFile, json);
+                Console.ReadKey();
             }
             else
             {
-                string json = File.ReadAllText(configFolder + "/" + configFile);
+                string json = File.ReadAllText(dataFolder + "/" + configFile);
                 bot = JsonConvert.DeserializeObject<BotConfig>(json);
             }
         }

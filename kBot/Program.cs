@@ -15,6 +15,11 @@ namespace kBot
 
         public async Task StartAsync()
         {
+            string name = "Peter";
+            string botName = "kBot";
+            string message = Utilities.GetFormattedAlert("WELCOME_&NAME_&BOTNAME", name, botName);
+            Console.WriteLine(message);
+            
             if (Config.bot.token == "" || Config.bot.token == null)
             {
                 return;

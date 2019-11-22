@@ -10,7 +10,7 @@ namespace kBot
 
         static Utilities()
         {
-            string json = File.ReadAllText("SystemLang/alerts.json");
+            string json = File.ReadAllText("Data/alerts.json");
             var data = JsonConvert.DeserializeObject<dynamic>(json);
             alerts = data.ToObject<Dictionary<string, string>>();
         }
@@ -21,10 +21,21 @@ namespace kBot
             {
                 return alerts[key];
             }
-            else
+            return "";
+        }
+
+        public static string GetFormattedAlert(string key, params object[] parameter)
+        {
+            if (alerts.ContainsKey(key))
             {
-                return "";
+                return string.Format(alerts[key], parameter);
             }
+            return "";
+        }
+
+        public static string GetFormattedAlert(string key, object parameter)
+        {
+            return GetFormattedAlert(key, new object[] { parameter });
         }
     }
 }
