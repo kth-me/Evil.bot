@@ -21,11 +21,12 @@ namespace kBot
             return embed.Build();
         }
 
-        public static dynamic Bad(string message)
+        public static dynamic Bad(string message, string user)
         {
             string icon = "⛔";
             embed.WithDescription($"{icon} {message}");
             embed.WithColor(new Color(190, 25, 49));
+            embed.WithFooter(user);
             return embed.Build();
         }
 
@@ -42,6 +43,15 @@ namespace kBot
             string icon = "⚠";
             embed.WithDescription($"{icon} {message}");
             embed.WithColor(new Color(255, 204, 76));
+            return embed.Build();
+        }
+
+        public static dynamic PermissionDenied(string user)
+        {
+            string icon = "⛔";
+            embed.WithDescription($"{icon} Permission denied");
+            embed.WithColor(new Color(190, 25, 49));
+            embed.WithFooter(user);
             return embed.Build();
         }
     }

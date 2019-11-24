@@ -33,9 +33,9 @@ namespace kBot
             return "";
         }
 
-        public static string GetFormattedAlert(string key, object parameter)
+        /*public static string GetFormattedAlert(string key, object parameter)
         {
             return GetFormattedAlert(key, new object[] { parameter });
-        }
+        }*/
     }
 }
