@@ -15,7 +15,7 @@ namespace Bot.Handlers
         public static dynamic Default(string message)
         {
             Embed.WithDescription(message);
-            // Need to specify colour here or will keep colour declared in other methods
+            Embed.WithColor(new Color(32, 34, 37));
             return Embed.Build();
         }
 

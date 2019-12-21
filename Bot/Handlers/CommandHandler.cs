@@ -41,7 +41,7 @@ namespace Bot.Handlers
         // Hook up any command specific events
         private void HookEvents()
         {
-            _client.MessageReceived += HandlerMessageAsync;
+            _client.MessageReceived += MessageHandlerAsync;
             _commands.CommandExecuted += CommandExecutedAsync;
             _commands.Log += LogAsync;
         }
@@ -49,11 +49,11 @@ namespace Bot.Handlers
         // Display any log messages to the console.
         private Task LogAsync(LogMessage log)
         {
-            _logger.Log(log.Message);
+            _logger.Default(log.Message);
             return Task.CompletedTask;
         }
 
-        private async Task HandlerMessageAsync(SocketMessage socketMessage)
+        private async Task MessageHandlerAsync(SocketMessage socketMessage)
         {
             // Don't process command if it was a system message
             if (!(socketMessage is SocketUserMessage message))
@@ -84,31 +84,19 @@ namespace Bot.Handlers
 
         public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            int spaceIndex;
-            string cleanResult;
-
-            // Command failed because it isn't found in bot (ignore it)
-            if (!command.IsSpecified)
+            // Command failed. Log to console and notify user
+            if (!result.IsSuccess)
             {
-                _logger.Log(($"Command Error: {result}"));
-                spaceIndex = $"{result}".IndexOf(' ');
-                cleanResult = $"{result}".Substring(spaceIndex);
-                await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(cleanResult));
+                await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(LogHandler.CleanResult($"{result}")));
+                _logger.BadLog(command.IsSpecified
+                    ? $"[Command Fail] {context.User.Username}#{context.User.Discriminator} used {_config.Prefix}{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name} ({result})"
+                    : $"[Command Fail] {context.User.Username}#{context.User.Discriminator} used unknown command in {context.Guild.Name}: #{context.Channel.Name} ({result})");
                 return;
             }
 
-            // Command Worked. Log to console who used it and what command was
-            if (result.IsSuccess)
-            {
-                Console.WriteLine($"Command: {context.User.Username} used {command.Value.Name}");
-                return;
-            }
-
-            // Command failed. Notify user that something happened
-            _logger.Log($"Command Error: {result}");
-            spaceIndex = $"{result}".IndexOf(' ');
-            cleanResult = $"{result}".Substring(spaceIndex);
-            await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(cleanResult));
+            // Command worked. Log to console
+            _logger.GoodLog($"[Command Success] {context.User.Username}#{context.User.Discriminator} used .{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name}");
+            return;
         }
     }
 }

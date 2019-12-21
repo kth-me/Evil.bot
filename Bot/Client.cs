@@ -84,7 +84,7 @@ namespace Bot
         // Display any log messages to the console.
         private Task LogAsync(LogMessage log)
         {
-            _logger.Log(log.Message);
+            _logger.Default(log.Message);
             return Task.CompletedTask;
         }
 
