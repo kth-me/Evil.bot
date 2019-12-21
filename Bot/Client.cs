@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
+using Bot.Handlers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bot
@@ -12,10 +13,10 @@ namespace Bot
         private CommandHandler _commands;
         private IServiceProvider _services;
         private Config _config;
-        private Logger _logger;
+        private LogHandler _logHandler;
 
         // Initialize client and config
-        public Client(CommandHandler commands = null, DiscordSocketClient client = null, Config config = null, Logger logger = null)
+        public Client(CommandHandler commands = null, DiscordSocketClient client = null, Config config = null, LogHandler logHandler = null)
         {
             // Create new DiscordClient (setting LogSeverity to Verbose)
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -30,8 +31,8 @@ namespace Bot
             // Get config data from config.json
             _config = config ?? new ConfigHandler().GetConfig();
 
-            // Set up logger
-            _logger = logger ?? new Logger();
+            // Set up logHandler
+            _logHandler = logHandler ?? new LogHandler();
         }
 
         public async Task StartAsync()
@@ -83,7 +84,7 @@ namespace Bot
                 .AddSingleton(_commands)
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ConfigHandler>()
-                .AddSingleton<Logger>()
+                .AddSingleton<LogHandler>()
                 .BuildServiceProvider();
         }
     }

@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
-namespace Bot
+namespace Bot.Handlers
 {
-    internal class Utilities
+    internal class DataHandler
     {
         private static Dictionary<string, string> alerts;
 
-        static Utilities()
+        static DataHandler()
         {
             string json = File.ReadAllText("Data/alerts.json");
             var data = JsonConvert.DeserializeObject<dynamic>(json);

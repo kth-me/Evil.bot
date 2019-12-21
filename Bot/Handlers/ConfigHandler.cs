@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
-namespace Bot
+namespace Bot.Handlers
 {
     internal class ConfigHandler
     {

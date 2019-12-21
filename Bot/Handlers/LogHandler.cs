@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Bot
+namespace Bot.Handlers
 {
-    public class Logger
+    public class LogHandler
     {
         public void Log(string msg)
         {

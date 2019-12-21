@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace Bot
+namespace Bot.Handlers
 {
     internal class EmbedHandler
     {

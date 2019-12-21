@@ -1,10 +1,11 @@
-﻿using Discord.Commands;
-using Discord.WebSocket;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Bot.Handlers;
+using Discord.Commands;
+using Discord.WebSocket;
 
-namespace Bot.Modules
+namespace Bot.Modules.Misc
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
@@ -34,8 +35,8 @@ namespace Bot.Modules
                 return;
             }
             var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
-            await dmChannel.SendMessageAsync(Utilities.GetAlert("SECRET"));
-            await Context.Channel.SendMessageAsync(Utilities.GetAlert("SECRET"));
+            await dmChannel.SendMessageAsync(DataHandler.GetAlert("SECRET"));
+            await Context.Channel.SendMessageAsync(DataHandler.GetAlert("SECRET"));
         }
 
         private bool UserIsSecretRole(SocketGuildUser user)

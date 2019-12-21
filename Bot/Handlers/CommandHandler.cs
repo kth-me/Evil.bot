@@ -1,10 +1,10 @@
-﻿using Discord.Commands;
-using Discord.WebSocket;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Discord.Commands;
+using Discord.WebSocket;
 
-namespace Bot
+namespace Bot.Handlers
 {
     internal class CommandHandler
     {
@@ -12,12 +12,12 @@ namespace Bot
         private CommandService _service;
         private readonly IServiceProvider _services;
         private Config _config;
-        private readonly Logger _logger;
+        private readonly LogHandler _logHandler;
 
         public async Task InitializeAsync(DiscordSocketClient client)
         {
             _client = client;
-            _service = new Discord.Commands.CommandService();
+            _service = new CommandService();
             await _service.AddModulesAsync(assembly: Assembly.GetEntryAssembly(), services: null);
             _client.MessageReceived += HandleCommandAsync;
             
