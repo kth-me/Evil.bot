@@ -6,7 +6,10 @@ namespace Bot.Handlers
     {
         public void Log(string msg)
         {
-            Console.WriteLine($"[{DateTime.Now:dd/m HH:mmtt}] - {msg}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm}]");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($" {msg}");
         }
     }
 }

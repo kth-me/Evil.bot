@@ -4,51 +4,52 @@ namespace Bot.Handlers
 {
     internal class EmbedHandler
     {
+        private const string _goodIcon = "✅";
+        private const string _badIcon = "⛔";
+        private const string _infoIcon = "ℹ";
+        private const string _alertIcon = "⚠";
+        private const string _deniedIcon = "⛔";
+
         public static EmbedBuilder Embed { get; } = new EmbedBuilder();
 
         public static dynamic Default(string message)
         {
             Embed.WithDescription(message);
+            // Need to specify colour here or will keep colour declared in other methods
             return Embed.Build();
         }
 
-        public static dynamic Good(string message)
+        public static Embed Good(string message)
         {
-            string icon = "✅";
-            Embed.WithDescription($"{icon} {message}");
+            Embed.WithDescription($"{_goodIcon} {message}");
             Embed.WithColor(new Color(119, 178, 85));
             return Embed.Build();
         }
 
-        public static dynamic Bad(string message, string user)
+        public static Embed Bad(string message)
         {
-            string icon = "⛔";
-            Embed.WithDescription($"{icon} {message}");
+            Embed.WithDescription($"{_badIcon} {message}");
             Embed.WithColor(new Color(190, 25, 49));
-            Embed.WithFooter(user);
             return Embed.Build();
         }
 
-        public static dynamic Info(string message)
+        public static Embed Info(string message)
         {
-            string icon = "ℹ";
-            Embed.WithDescription($"{icon} {message}");
+            Embed.WithDescription($"{_infoIcon} {message}");
             Embed.WithColor(new Color(59, 136, 195));
             return Embed.Build();
         }
 
-        public static dynamic Alert(string message)
+        public static Embed Alert(string message)
         {
-            string icon = "⚠";
-            Embed.WithDescription($"{icon} {message}");
+            Embed.WithDescription($"{_alertIcon} {message}");
             Embed.WithColor(new Color(255, 204, 76));
             return Embed.Build();
         }
 
-        public static dynamic PermissionDenied(string user)
+        public static Embed PermissionDenied(string user)
         {
-            string icon = "⛔";
-            Embed.WithDescription($"{icon} Permission denied");
+            Embed.WithDescription($"{_deniedIcon} Permission denied");
             Embed.WithColor(new Color(190, 25, 49));
             Embed.WithFooter(user);
             return Embed.Build();

@@ -1,22 +1,23 @@
-﻿using Discord;
+﻿using Bot.Handlers;
+using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using Bot.Handlers;
-using Microsoft.Extensions.DependencyInjection;
+using Discord.Commands;
 
 namespace Bot
 {
     internal class Client
     {
-        private DiscordSocketClient _client;
-        private CommandHandler _commands;
+        private readonly DiscordSocketClient _client;
+        private readonly CommandService _commands;
+        private readonly Config _config;
+        private readonly LogHandler _logger;
         private IServiceProvider _services;
-        private Config _config;
-        private LogHandler _logHandler;
 
         // Initialize client and config
-        public Client(CommandHandler commands = null, DiscordSocketClient client = null, Config config = null, LogHandler logHandler = null)
+        public Client(CommandService commands = null, DiscordSocketClient client = null, Config config = null, LogHandler logger = null)
         {
             // Create new DiscordClient (setting LogSeverity to Verbose)
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -26,39 +27,47 @@ namespace Bot
                 MessageCacheSize = 100
             });
 
-            // Create new CommandHandler
+            // Create new CommandService (setting RunMode to async by default on all commands)
+            _commands = commands ?? new CommandService(new CommandServiceConfig
+            {
+                DefaultRunMode = RunMode.Async,
+                CaseSensitiveCommands = false,
+                LogLevel = LogSeverity.Verbose
+            });
 
             // Get config data from config.json
             _config = config ?? new ConfigHandler().GetConfig();
 
             // Set up logHandler
-            _logHandler = logHandler ?? new LogHandler();
+            _logger = logger ?? new LogHandler();
         }
 
-        public async Task StartAsync()
+        public async Task InitializeAsync()
         {
             // Check for presence of bot token
-            if (string.IsNullOrEmpty(_config.Token))
-                return;
+            // if (string.IsNullOrEmpty(_config.Token))
+            //     return;
+
+            //Set up services
+            _services = ConfigureServices();
 
             // Login with the client
             await _client.LoginAsync(TokenType.Bot, _config.Token);
-            
+
             // Start the client
             await _client.StartAsync();
-            
+
             // Hook up events
             HookEvents();
 
             // Initialize CommandHandler Handler
-            _commands = new CommandHandler();
-            await _commands.InitializeAsync(_client);
+            await _services.GetRequiredService<CommandHandler>().InitializeAsync();
 
             // Prevent bot from shutting down instantly
             await Task.Delay(-1);
         }
 
-        // Hook up any events we want to use
+        // Hook up any command specific events
         private void HookEvents()
         {
             _client.Log += LogAsync;
@@ -72,11 +81,15 @@ namespace Bot
             await _client.SetGameAsync("Test Status");
         }
 
-        private async Task LogAsync(LogMessage msg)
+        // Display any log messages to the console.
+        private Task LogAsync(LogMessage log)
         {
-            Console.WriteLine(msg.Message);
+            _logger.Log(log.Message);
+            return Task.CompletedTask;
         }
 
+        // Used to add any services to the DI Service Provider
+        // These services are then injected wherever they're needed
         private ServiceProvider ConfigureServices()
         {
             return new ServiceCollection()

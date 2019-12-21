@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Bot.Handlers;
+﻿using Bot.Handlers;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bot.Modules.Misc
 {
@@ -12,7 +13,7 @@ namespace Bot.Modules.Misc
         [Command("echo")]
         public async Task Echo([Remainder]string message)
         {
-            await Context.Channel.SendMessageAsync("", false, EmbedHandler.Default(message));
+            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Default(message));
         }
 
         [Command("pick")]
@@ -23,7 +24,7 @@ namespace Bot.Modules.Misc
             Random r = new Random();
             string selection = options[r.Next(0, options.Length)];
 
-            await Context.Channel.SendMessageAsync("", false, EmbedHandler.Default(selection));
+            await ReplyAsync(embed: EmbedHandler.Default(selection));
         }
 
         [Command("secret")]
@@ -31,12 +32,12 @@ namespace Bot.Modules.Misc
         {
             if (!UserIsSecretRole((SocketGuildUser)Context.User))
             {
-                await Context.Channel.SendMessageAsync("", false, EmbedHandler.PermissionDenied(Context.User.Username));
+                await ReplyAsync(embed: EmbedHandler.PermissionDenied(Context.User.Username));
                 return;
             }
             var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
             await dmChannel.SendMessageAsync(DataHandler.GetAlert("SECRET"));
-            await Context.Channel.SendMessageAsync(DataHandler.GetAlert("SECRET"));
+            await ReplyAsync(DataHandler.GetAlert("SECRET"));
         }
 
         private bool UserIsSecretRole(SocketGuildUser user)

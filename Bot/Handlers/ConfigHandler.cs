@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace Bot.Handlers
 {
@@ -9,17 +9,17 @@ namespace Bot.Handlers
     {
         private const string _dataDirectory = "Data";
         private const string _configFile = "config.json";
-        private const string _configLocation = _dataDirectory + "/"+ _configFile;
+        private const string _configLocation = _dataDirectory + "/" + _configFile;
 
         /// <summary>
-        /// Get information from config.json file for use with bot
+        /// Get information from config.json file for use with bot.
         /// </summary>
         /// <returns></returns>
         public Config GetConfig()
             => GetBotConfigData();
 
         /// <summary>
-        /// Private function to hide implementation of this method
+        /// Private function to hide implementation of this method.
         /// </summary>
         /// <returns></returns>
         private Config GetBotConfigData()
@@ -30,7 +30,7 @@ namespace Bot.Handlers
         }
 
         /// <summary>
-        /// Check if config.json exists and generate one if it doesn't
+        /// Check if config.json exists and generate one if it doesn't.
         /// </summary>
         private void CheckConfigExists()
         {
@@ -42,7 +42,7 @@ namespace Bot.Handlers
             if (!File.Exists(_configLocation))
             {
                 Console.WriteLine("No config file found.\n" +
-                                  $"A new one has been generated at {_configLocation}\n" + 
+                                  $"A new one has been generated at {_configLocation}\n" +
                                   "Fill in required values and restart the bot.");
                 var json = JsonConvert.SerializeObject(GenerateDefaultConfig(), Formatting.Indented);
                 File.WriteAllText(_configLocation, json, Encoding.UTF8);
@@ -52,7 +52,7 @@ namespace Bot.Handlers
         }
 
         /// <summary>
-        /// Generate config.json file with default values
+        /// Generate config.json file with default values.
         /// </summary>
         /// <returns></returns>
         private Config GenerateDefaultConfig()
@@ -62,22 +62,6 @@ namespace Bot.Handlers
                 Prefix = ".",
                 Status = "It's alive!"
             };
-
-        // static ConfigHandler()
-        // {
-        //     if (!File.Exists(_dataDirectory + "/" + _configFile))
-        //     {
-        //         bot = new Config();
-        //         string json = JsonConvert.SerializeObject(bot, Formatting.Indented);
-        //         File.WriteAllText(_dataDirectory + "/" + _configFile, json);
-        //         Console.ReadKey();
-        //     }
-        //     else
-        //     {
-        //         string json = File.ReadAllText(_dataDirectory + "/" + _configFile);
-        //         bot = JsonConvert.DeserializeObject<Config>(json);
-        //     }
-        // }
     }
 
     // Structure of config.json file
