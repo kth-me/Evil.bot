@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace kBot
+namespace Bot
 {
     class Config
     {

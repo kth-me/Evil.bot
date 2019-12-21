@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
 
-namespace kBot
+namespace Bot
 {
     class Program
     {
         DiscordSocketClient _client;
         CommandHandler _handler;
 
-        static void Main(string[] args)
+        static void Main()
         => new Program().StartAsync().GetAwaiter().GetResult();
 
         public async Task StartAsync()
         {
-            /*string name = "Peter";
-            string botName = "kBot";
-            string message = Utilities.GetFormattedAlert("WELCOME_&NAME_&BOTNAME", name, botName);
-            Console.WriteLine(message);*/
-            
             if (Config.bot.token == "" || Config.bot.token == null)
             {
                 return;

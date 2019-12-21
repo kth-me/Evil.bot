@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace kBot.Modules
+namespace Bot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {

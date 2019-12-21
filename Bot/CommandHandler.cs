@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Reflection;
+using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace kBot
+namespace Bot
 {
     class CommandHandler
     {
