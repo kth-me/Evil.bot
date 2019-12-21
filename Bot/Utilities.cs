@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace Bot
 {
-    class Utilities
+    internal class Utilities
     {
         private static Dictionary<string, string> alerts;
 

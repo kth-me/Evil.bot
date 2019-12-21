@@ -2,7 +2,7 @@
 
 namespace Bot
 {
-    class EmbedHandler
+    internal class EmbedHandler
     {
         public static EmbedBuilder Embed { get; } = new EmbedBuilder();
 
