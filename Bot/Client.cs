@@ -5,15 +5,17 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using EventHandler = Bot.Handlers.EventHandler;
 
 namespace Bot
 {
     internal class Client
     {
         private readonly DiscordSocketClient _client;
-        private readonly CommandService _commands;
         private readonly Config _config;
+        private readonly CommandService _commands;
         private readonly LogHandler _logger;
+
         private IServiceProvider _services;
 
         // Initialize client and config
@@ -60,7 +62,10 @@ namespace Bot
             // Hook up events
             HookEvents();
 
-            // Initialize CommandHandler Handler
+            // Initialize EventHandler
+            _services.GetRequiredService<EventHandler>().InitializeEvents();
+            
+            // Initialize CommandHandler
             await _services.GetRequiredService<CommandHandler>().InitializeAsync();
 
             // Prevent bot from shutting down instantly
@@ -74,7 +79,7 @@ namespace Bot
             _client.Ready += OnReadyAsync;
         }
 
-        //When client sends event indicating it is ready, set the Now Playing to what is in config.json
+        // When client sends event indicating it is ready, set the Now Playing to what is in config.json
         private async Task OnReadyAsync()
         {
             // await _client.SetGameAsync(_config.GameStatus);
@@ -95,6 +100,7 @@ namespace Bot
             return new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
+                .AddSingleton<EventHandler>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ConfigHandler>()
                 .AddSingleton<LogHandler>()

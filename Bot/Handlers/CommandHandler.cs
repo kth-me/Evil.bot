@@ -10,8 +10,8 @@ namespace Bot.Handlers
     public class CommandHandler
     {
         private readonly DiscordSocketClient _client;
-        private readonly CommandService _commands;
         private readonly Config _config;
+        private readonly CommandService _commands;
         private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 
@@ -41,7 +41,7 @@ namespace Bot.Handlers
         // Hook up any command specific events
         private void HookEvents()
         {
-            _client.MessageReceived += MessageHandlerAsync;
+            _client.MessageReceived += OnMessageReceivedAsync;
             _commands.CommandExecuted += OnCommandExecutedAsync;
             _commands.Log += LogAsync;
         }
@@ -53,7 +53,7 @@ namespace Bot.Handlers
             return Task.CompletedTask;
         }
 
-        private async Task MessageHandlerAsync(SocketMessage socketMessage)
+        private async Task OnMessageReceivedAsync(SocketMessage socketMessage)
         {
             // Don't process command if it was a system message
             if (!(socketMessage is SocketUserMessage message))

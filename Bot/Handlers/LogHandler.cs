@@ -37,7 +37,7 @@ namespace Bot.Handlers
 
         public void Info(string msg)
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm}]");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($" {msg}");
