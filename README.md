@@ -1,5 +1,5 @@
 # kBot
  
-A general purpose Discord bot. Coded in C♯/.NET.
+A general purpose Discord bot coded in C♯/.NET
 
 http://kth.me/projects/kbot/
