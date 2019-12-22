@@ -12,7 +12,7 @@ namespace Bot.Handlers
 
         public static EmbedBuilder Embed { get; } = new EmbedBuilder();
 
-        public static dynamic Default(string message)
+        public static Embed Default(string message)
         {
             Embed.WithDescription(message);
             Embed.WithColor(new Color(32, 34, 37));
@@ -47,7 +47,7 @@ namespace Bot.Handlers
             return Embed.Build();
         }
 
-        public static Embed PermissionDenied(string user)
+        public static Embed NoPermission(string user)
         {
             Embed.WithDescription($"{_deniedIcon} Permission denied");
             Embed.WithColor(new Color(190, 25, 49));

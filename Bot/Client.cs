@@ -1,10 +1,10 @@
 ﻿using Bot.Handlers;
 using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using Discord.Commands;
 
 namespace Bot
 {
@@ -45,8 +45,8 @@ namespace Bot
         public async Task InitializeAsync()
         {
             // Check for presence of bot token
-            // if (string.IsNullOrEmpty(_config.Token))
-            //     return;
+            if (string.IsNullOrEmpty(_config.Token))
+                return;
 
             //Set up services
             _services = ConfigureServices();

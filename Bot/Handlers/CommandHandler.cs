@@ -42,7 +42,7 @@ namespace Bot.Handlers
         private void HookEvents()
         {
             _client.MessageReceived += MessageHandlerAsync;
-            _commands.CommandExecuted += CommandExecutedAsync;
+            _commands.CommandExecuted += OnCommandExecutedAsync;
             _commands.Log += LogAsync;
         }
 
@@ -60,11 +60,11 @@ namespace Bot.Handlers
                 return;
 
             // Create number to track where prefix ends and command begins
-            int argPos = 0;
+            var argPos = 0;
 
             // Determine if message is command based on prefix and make sure no bots trigger commands
-            if (!(message.HasStringPrefix(_config.Prefix, ref argPos) || 
-                  message.HasMentionPrefix(_client.CurrentUser, ref argPos)) || 
+            if (!(message.HasStringPrefix(_config.Prefix, ref argPos) ||
+                  message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                   message.Author.IsBot)
                 return;
 
@@ -82,20 +82,28 @@ namespace Bot.Handlers
                 services: _services);
         }
 
-        public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
+        public async Task OnCommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
             // Command failed. Log to console and notify user
             if (!result.IsSuccess)
             {
-                await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(LogHandler.CleanResult($"{result}")));
-                _logger.BadLog(command.IsSpecified
-                    ? $"[Command Fail] {context.User.Username}#{context.User.Discriminator} used {_config.Prefix}{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name} ({result})"
-                    : $"[Command Fail] {context.User.Username}#{context.User.Discriminator} used unknown command in {context.Guild.Name}: #{context.Channel.Name} ({result})");
+                var cleanResult = LogHandler.CleanResult($"{result}");
+
+                if (command.IsSpecified)
+                {
+                    await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(cleanResult));
+                    _logger.Alert($"[Command Error] {context.User.Username}#{context.User.Discriminator} used {_config.Prefix}{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name} ({cleanResult})");
+                }
+                else
+                {
+                    await context.Channel.SendMessageAsync(embed: EmbedHandler.Bad(LogHandler.CleanResult($"{result}")));
+                    _logger.Bad($"[Command Fail] {context.User.Username}#{context.User.Discriminator} used unknown command in {context.Guild.Name}: #{context.Channel.Name} ({cleanResult})");
+                }
                 return;
             }
 
-            // Command worked. Log to console
-            _logger.GoodLog($"[Command Success] {context.User.Username}#{context.User.Discriminator} used .{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name}");
+            // Command succeeded. Log to console
+            _logger.Good($"[Command Success] {context.User.Username}#{context.User.Discriminator} used .{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name}");
             return;
         }
     }

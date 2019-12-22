@@ -1,7 +1,6 @@
 ﻿using Bot.Handlers;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,10 +18,10 @@ namespace Bot.Modules.Misc
         [Command("pick")]
         public async Task Pick([Remainder]string message)
         {
-            string[] options = message.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            var options = message.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Random r = new Random();
-            string selection = options[r.Next(0, options.Length)];
+            var r = new Random();
+            var selection = options[r.Next(0, options.Length)];
 
             await ReplyAsync(embed: EmbedHandler.Default(selection));
         }
@@ -32,7 +31,7 @@ namespace Bot.Modules.Misc
         {
             if (!UserIsSecretRole((SocketGuildUser)Context.User))
             {
-                await ReplyAsync(embed: EmbedHandler.PermissionDenied(Context.User.Username));
+                await ReplyAsync(embed: EmbedHandler.NoPermission(Context.User.Username));
                 return;
             }
             var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
@@ -42,11 +41,11 @@ namespace Bot.Modules.Misc
 
         private bool UserIsSecretRole(SocketGuildUser user)
         {
-            string targetRoleName = "SecretRole";
+            var targetRoleName = "SecretRole";
             var result = from r in user.Guild.Roles
                          where r.Name == targetRoleName
                          select r.Id;
-            ulong roleID = result.FirstOrDefault();
+            var roleID = result.FirstOrDefault();
             if (roleID == 0) return false;
             var targetRole = user.Guild.GetRole(roleID);
             return user.Roles.Contains(targetRole);

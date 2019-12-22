@@ -16,13 +16,13 @@ namespace Bot.Handlers
         /// </summary>
         /// <returns></returns>
         public Config GetConfig()
-            => GetBotConfigData();
+            => GetConfigData();
 
         /// <summary>
         /// Private function to hide implementation of this method.
         /// </summary>
         /// <returns></returns>
-        private Config GetBotConfigData()
+        private Config GetConfigData()
         {
             CheckConfigExists();
             var data = File.ReadAllText(_configLocation);
@@ -35,20 +35,18 @@ namespace Bot.Handlers
         private void CheckConfigExists()
         {
             if (!Directory.Exists(_dataDirectory))
-            {
                 Directory.CreateDirectory(_dataDirectory);
-            }
 
-            if (!File.Exists(_configLocation))
-            {
-                Console.WriteLine("No config file found.\n" +
-                                  $"A new one has been generated at {_configLocation}\n" +
-                                  "Fill in required values and restart the bot.");
-                var json = JsonConvert.SerializeObject(GenerateDefaultConfig(), Formatting.Indented);
-                File.WriteAllText(_configLocation, json, Encoding.UTF8);
-                Console.ReadKey();
-                Environment.Exit(0);
-            }
+            if (File.Exists(_configLocation))
+                return;
+
+            Console.WriteLine("No config file found.\n" +
+                              $"A new one has been generated at {_configLocation}\n" +
+                              "Fill in required values and restart the bot.");
+            var json = JsonConvert.SerializeObject(GenerateDefaultConfig(), Formatting.Indented);
+            File.WriteAllText(_configLocation, json, Encoding.UTF8);
+            Console.ReadKey();
+            Environment.Exit(0);
         }
 
         /// <summary>
