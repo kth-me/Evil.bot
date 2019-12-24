@@ -30,6 +30,21 @@ namespace Bot.Handlers
         }
 
         /// <summary>
+        /// Generate config.json file with default values.
+        /// </summary>
+        /// <returns></returns>
+        private Config GenerateDefaultConfig()
+            => new Config
+            {
+                Token = "",
+                Prefix = ".",
+                Status = "Ready",
+                LogChannelID = "457063331518349315",
+                AdminRoleID = "562545625057722389",
+                ModRoleID = "562554195887128576"
+            };
+
+        /// <summary>
         /// Check if config.json exists and generate one if it doesn't.
         /// </summary>
         private void CheckConfigExists()
@@ -48,18 +63,5 @@ namespace Bot.Handlers
             Console.ReadKey();
             Environment.Exit(0);
         }
-
-        /// <summary>
-        /// Generate config.json file with default values.
-        /// </summary>
-        /// <returns></returns>
-        private Config GenerateDefaultConfig()
-            => new Config
-            {
-                Token = "",
-                Prefix = ".",
-                Status = "It's alive!"
-            };
     }
-
 }

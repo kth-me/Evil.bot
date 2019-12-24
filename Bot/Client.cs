@@ -12,16 +12,15 @@ namespace Bot
     internal class Client
     {
         private readonly DiscordSocketClient _client;
-        private readonly Config _config;
         private readonly CommandService _commands;
+        private readonly Config _config;
         private readonly LogHandler _logger;
-
         private IServiceProvider _services;
 
         // Initialize client and config
-        public Client(CommandService commands = null, DiscordSocketClient client = null, Config config = null, LogHandler logger = null)
+        public Client(CommandService commands = null, Config config = null, LogHandler logger = null)
         {
-            // Create new DiscordClient (setting LogSeverity to Verbose)
+            // Create new DiscordClient
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = LogSeverity.Verbose,
@@ -62,11 +61,11 @@ namespace Bot
             // Hook up events
             HookEvents();
 
-            // Initialize EventHandler
-            _services.GetRequiredService<EventHandler>().InitializeEvents();
-            
             // Initialize CommandHandler
             await _services.GetRequiredService<CommandHandler>().InitializeAsync();
+
+            // Initialize EventHandler
+            _services.GetRequiredService<EventHandler>().InitializeEvents();
 
             // Prevent bot from shutting down instantly
             await Task.Delay(-1);
@@ -82,14 +81,13 @@ namespace Bot
         // When client sends event indicating it is ready, set the Now Playing to what is in config.json
         private async Task OnReadyAsync()
         {
-            // await _client.SetGameAsync(_config.GameStatus);
-            await _client.SetGameAsync("Test Status");
+            await _client.SetGameAsync(_config.Status);
         }
 
-        // Display any log messages to the console.
+        // Display log messages to the console.
         private Task LogAsync(LogMessage log)
         {
-            _logger.Default(log.Message);
+            _logger.Neutral(log.Message);
             return Task.CompletedTask;
         }
 
@@ -100,8 +98,8 @@ namespace Bot
             return new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
-                .AddSingleton<EventHandler>()
                 .AddSingleton<CommandHandler>()
+                .AddSingleton<EventHandler>()
                 .AddSingleton<ConfigHandler>()
                 .AddSingleton<LogHandler>()
                 .BuildServiceProvider();

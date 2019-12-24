@@ -1,58 +1,83 @@
 ﻿using Discord;
+using Discord.WebSocket;
+using System;
 
 namespace Bot.Handlers
 {
-    internal class EmbedHandler
+    public class EmbedHandler
     {
-        private const string _goodIcon = "✅";
-        private const string _badIcon = "⛔";
-        private const string _infoIcon = "ℹ";
-        private const string _alertIcon = "⚠";
-        private const string _deniedIcon = "⛔";
+        private static string _icon;
+        private static Color _color;
 
-        public static EmbedBuilder Embed { get; } = new EmbedBuilder();
+        private static EmbedBuilder _embed;
 
-        public static Embed Default(string message)
+        private enum EmbedType
         {
-            Embed.WithDescription(message);
-            Embed.WithColor(new Color(32, 34, 37));
-            return Embed.Build();
+            Neutral,
+            Good,
+            Bad,
+            Info,
+            Alert,
+            Update
         }
 
-        public static Embed Good(string message)
+        public static Embed Neutral(string message) => EmbedLogic(EmbedType.Neutral, message);
+        public static Embed Good(string message) => EmbedLogic(EmbedType.Good, message);
+        public static Embed Bad(string message) => EmbedLogic(EmbedType.Bad, message);
+        public static Embed Info(string message) => EmbedLogic(EmbedType.Info, message);
+        public static Embed Alert(string message) => EmbedLogic(EmbedType.Alert, message);
+        
+        public static Embed Update(string message) => EmbedLogic(EmbedType.Update, message);
+        public static Embed Update(string message, SocketUser oldUser, SocketUser newUser) => UpdateLogic(message, oldUser, newUser);
+
+        private static Embed EmbedLogic(EmbedType embedType, string message)
         {
-            Embed.WithDescription($"{_goodIcon} {message}");
-            Embed.WithColor(new Color(119, 178, 85));
-            return Embed.Build();
+            switch (embedType)
+            {
+                case EmbedType.Neutral:
+                    _icon = "";
+                    _color = new Color(32, 34, 37);
+                    break;
+                case EmbedType.Good:
+                    _icon = "✅";
+                    _color = new Color(119, 178, 85);
+                    break;
+                case EmbedType.Bad:
+                    _icon = "⛔";
+                    _color = new Color(190, 25, 49);
+                    break;
+                case EmbedType.Info:
+                    _icon = "ℹ";
+                    _color = new Color(59, 136, 195);
+                    break;
+                case EmbedType.Alert:
+                    _icon = "⚠";
+                    _color = new Color(255, 204, 76);
+                    break;
+                case EmbedType.Update:
+                    _icon = "⚛️";
+                    _color = new Color(146, 102, 204);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(embedType), embedType, null);
+            }
+
+            _embed = new EmbedBuilder();
+            _embed.WithDescription($"{_icon} {message}");
+            _embed.WithColor(_color);
+            return _embed.Build();
         }
 
-        public static Embed Bad(string message)
+        private static Embed UpdateLogic(string message, SocketUser oldUser, SocketUser newUser)
         {
-            Embed.WithDescription($"{_badIcon} {message}");
-            Embed.WithColor(new Color(190, 25, 49));
-            return Embed.Build();
-        }
-
-        public static Embed Info(string message)
-        {
-            Embed.WithDescription($"{_infoIcon} {message}");
-            Embed.WithColor(new Color(59, 136, 195));
-            return Embed.Build();
-        }
-
-        public static Embed Alert(string message)
-        {
-            Embed.WithDescription($"{_alertIcon} {message}");
-            Embed.WithColor(new Color(255, 204, 76));
-            return Embed.Build();
-        }
-
-        public static Embed NoPermission(string user)
-        {
-            Embed.WithDescription($"{_deniedIcon} Permission denied");
-            Embed.WithColor(new Color(190, 25, 49));
-            Embed.WithFooter(user);
-            return Embed.Build();
+            _embed = new EmbedBuilder();
+            _embed.WithTitle($"⚛️ {message}");
+            _embed.WithDescription($"{newUser.Mention}");
+            _embed.AddField("Old", oldUser, true);
+            _embed.AddField("New", newUser, true);
+            _embed.WithFooter($"{DateTime.Now:HH:mm:ss}");
+            _embed.WithColor(new Color(146, 102, 204));
+            return _embed.Build();
         }
     }
 }
