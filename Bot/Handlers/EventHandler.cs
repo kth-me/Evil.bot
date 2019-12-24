@@ -76,9 +76,6 @@ namespace Bot.Handlers
 
         private async Task ChannelCreated(SocketChannel channel)
         {
-            // await LogChannel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
-
-            await LogChannel.SendMessageAsync($"Channel {channel} created");
             _logger.Info($"Channel {channel} created");
         }
 
@@ -113,11 +110,6 @@ namespace Bot.Handlers
 
         private async Task GuildMemberUpdated(SocketGuildUser userBefore, SocketGuildUser userAfter)
         {
-            // Console.WriteLine(userAfter);
-            //
-            // await LogChannel.SendMessageAsync(embed: EmbedHandler.LogUserRole(userBefore, userAfter));
-            // await LogChannel.SendMessageAsync($"Channel {channel} created");
-            // _logger.Info($"Channel {channel} created");
         }
 
         private async Task GuildUnavailable(SocketGuild guild)
@@ -222,7 +214,7 @@ namespace Bot.Handlers
 
         private async Task UserUpdated(SocketUser oldUser, SocketUser newUser)
         {
-            var message = "Username Changed";
+            var message = "User Updated";
             await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, oldUser, newUser));
             _logger.Update($"[{message}] {oldUser} => {newUser}");
 
