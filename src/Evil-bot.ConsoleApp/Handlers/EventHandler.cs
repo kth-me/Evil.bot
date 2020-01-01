@@ -110,9 +110,9 @@ namespace Bot.Handlers
 
         private async Task GuildMemberUpdated(SocketGuildUser userBefore, SocketGuildUser userAfter)
         {
-            var message = "Guild Member Updated";
-            await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, userBefore, userAfter));
-            _logger.Update($"[{message}] {userBefore.Status} => {userAfter.Status}");
+            //var message = "Guild Member Updated";
+            //await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, userBefore, userAfter));
+            //_logger.Update($"[{message}] {userBefore.Status} => {userAfter.Status}");
         }
 
         private async Task GuildUnavailable(SocketGuild guild)

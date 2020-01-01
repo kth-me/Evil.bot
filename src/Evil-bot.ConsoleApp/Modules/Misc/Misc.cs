@@ -40,7 +40,7 @@ namespace Bot.Modules.Misc
         [Command("echo")]
         public async Task Echo([Remainder]string message)
         {
-            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Update(message));
+            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
         }
 
         // [Command("test")]
