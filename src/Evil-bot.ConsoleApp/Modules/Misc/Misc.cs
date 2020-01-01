@@ -9,11 +9,46 @@ namespace Bot.Modules.Misc
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+        private readonly DiscordSocketClient _client;
+        private readonly DiscordSocketClient _guild;
+        private readonly Config _config;
+        private readonly LogHandler _logger;
+
+
+        public SocketTextChannel LogChannel
+        {
+            get
+            {
+                var guild = _client.GetGuild(446832659377946625);
+                var channel = guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelID));
+                return channel;
+            }
+        }
+
+
+        public SocketGuild Guild
+        {
+            get
+            {
+                var guild = _client.GetGuild(446832659377946625);
+                return guild;
+            }
+        }
+
+        public SocketUser Owner => Guild.Owner;
+
         [Command("echo")]
         public async Task Echo([Remainder]string message)
         {
-            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
+            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Update(message));
         }
+
+        // [Command("test")]
+        // public async Task Test()
+        // {
+        //     var message = "User Updated";
+        //     await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, Owner, Owner));
+        // }
 
         [Command("pick")]
         public async Task Pick([Remainder]string message)
