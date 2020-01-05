@@ -6,25 +6,32 @@ namespace Bot.Handlers
 {
     public class EmbedHandler
     {
-        public static Embed Neutral(string message = null, string title = null, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null)
+        public static Embed Neutral(string message = null, string title = null, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null)
             => EmbedLogic(message, title, "", new Color(32, 34, 37), user, userBefore, userAfter, oldUser, newUser);
 
-        public static Embed Good(string message = null, string title = null, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
+        public static Embed Good(string message = null, string title = null, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
             => EmbedLogic(message, title, "✅", new Color(119, 178, 85), user, userBefore, userAfter, oldUser, newUser);
 
-        public static Embed Bad(string message = null, string title = null, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
+        public static Embed Bad(string message = null, string title = null, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
             => EmbedLogic(message, title, "⛔", new Color(190, 25, 49), user, userBefore, userAfter, oldUser, newUser);
 
-        public static Embed Info(string message = null, string title = null, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
+        public static Embed Info(string message = null, string title = null, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
             => EmbedLogic(message, title, "ℹ", new Color(59, 136, 195), user, userBefore, userAfter, oldUser, newUser);
 
-        public static Embed Alert(string message = null, string title = null, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
+        public static Embed Alert(string message = null, string title = null, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
             => EmbedLogic(message, title, "⚠", new Color(255, 204, 76), user, userBefore, userAfter, oldUser, newUser);
 
-        public static Embed Update(string message = null, string title = null, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
+        public static Embed Update(string message = null, string title = null, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null) 
             => EmbedLogic(message, title, "⚛️", new Color(146, 102, 204), user, userBefore, userAfter, oldUser, newUser);
 
-        private static Embed EmbedLogic(string message, string title, string icon, Color color, SocketGuildUser user = null, SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null)
+        private static Embed EmbedLogic(string message, string title, string icon, Color color, SocketGuildUser user = null, 
+            SocketGuildUser userBefore = null, SocketGuildUser userAfter = null, SocketUser oldUser = null, SocketUser newUser = null)
         {
             var embed = new EmbedBuilder();
 
@@ -60,6 +67,14 @@ namespace Bot.Handlers
                 }
 
                 if (title == "User Updated")
+                {
+                    embed.WithDescription($"{newUser.Mention}‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎");
+                    embed.AddField($"Old Username", oldUser.Status, true);
+                    embed.AddField($"New Username", newUser.Status, true);
+                    return embed.Build();
+                }
+
+                if (title == "User Voice State Updated")
                 {
                     embed.WithDescription($"{newUser.Mention}‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎");
                     embed.AddField($"Old Username", oldUser.Status, true);

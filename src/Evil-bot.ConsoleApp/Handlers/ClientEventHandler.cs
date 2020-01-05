@@ -226,7 +226,6 @@ namespace Bot.Handlers
 
         private async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState voiceStateBefore, SocketVoiceState voiceStateAfter)
         {
-
         }
     }
 }

@@ -4,6 +4,8 @@ using Discord.WebSocket;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Bot.ConsoleApp.Handlers;
+using Discord;
 
 namespace Bot.Modules.Misc
 {
@@ -40,6 +42,8 @@ namespace Bot.Modules.Misc
         }
 
         [Command("pick")]
+        [Remarks("Picks between given options")]
+        //[RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Pick([Remainder]string message)
         {
             var options = message.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
