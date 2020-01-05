@@ -5,7 +5,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using EventHandler = Bot.Handlers.EventHandler;
 
 namespace Bot
 {
@@ -15,9 +14,8 @@ namespace Bot
         private readonly CommandService _commands;
         private readonly Config _config;
         private readonly LogHandler _logger;
-        private IServiceProvider _services;
+        private readonly IServiceProvider _services;
 
-        // Initialize client and config
         public Client(CommandService commands = null, Config config = null, LogHandler logger = null)
         {
             // Create new DiscordClient
@@ -28,7 +26,7 @@ namespace Bot
                 MessageCacheSize = 100
             });
 
-            // Create new CommandService (setting RunMode to async by default on all commands)
+            // Create new CommandService
             _commands = commands ?? new CommandService(new CommandServiceConfig
             {
                 DefaultRunMode = RunMode.Async,
@@ -36,38 +34,24 @@ namespace Bot
                 LogLevel = LogSeverity.Verbose
             });
 
-            // Get config data from config.json
+            // Set up config, logger, and services
             _config = config ?? new ConfigHandler().GetConfig();
-
-            // Set up logHandler
             _logger = logger ?? new LogHandler();
+            _services = ConfigureServices();
         }
 
         public async Task InitializeAsync()
         {
-            // Check for presence of bot token
-            if (string.IsNullOrEmpty(_config.Token))
-                return;
-
-            //Set up services
-            _services = ConfigureServices();
-
-            // Login with the client
-            await _client.LoginAsync(TokenType.Bot, _config.Token);
-
-            // Start the client
-            await _client.StartAsync();
-
             // Hook up events
             HookEvents();
 
-            // Initialize CommandHandler
+            // Login with client and start
+            await _client.LoginAsync(TokenType.Bot, _config.Token);
+            await _client.StartAsync();
+
+            // Initialize CommandHandler and ClientEventHandler and prevent bot from shutting down instantly
             await _services.GetRequiredService<CommandHandler>().InitializeAsync();
-
-            // Initialize EventHandler
-            _services.GetRequiredService<EventHandler>().InitializeEvents();
-
-            // Prevent bot from shutting down instantly
+            await _services.GetRequiredService<ClientEventHandler>().InitializeEvents();
             await Task.Delay(-1);
         }
 
@@ -81,7 +65,7 @@ namespace Bot
         // When client sends event indicating it is ready, set the Now Playing to what is in config.json
         private async Task OnReadyAsync()
         {
-            await _client.SetGameAsync(_config.Status);
+            await _client.SetGameAsync(name: _config.Status);
         }
 
         // Display log messages to the console.
@@ -99,7 +83,7 @@ namespace Bot
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
                 .AddSingleton<CommandHandler>()
-                .AddSingleton<EventHandler>()
+                .AddSingleton<ClientEventHandler>()
                 .AddSingleton<ConfigHandler>()
                 .AddSingleton<LogHandler>()
                 .BuildServiceProvider();

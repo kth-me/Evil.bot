@@ -20,7 +20,7 @@ namespace Bot.Handlers
         {
             Console.ForegroundColor = color;
             Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm:ss}]");
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ResetColor();
             Console.WriteLine($" {message}");
         }
     }

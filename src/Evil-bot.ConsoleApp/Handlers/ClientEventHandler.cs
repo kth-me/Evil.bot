@@ -9,33 +9,31 @@ namespace Bot.Handlers
     /// Put your subscriptions to events here!
     /// Just one non awaited async Method per functionality you want to provide
     /// </summary>
-    public class EventHandler
+    public class ClientEventHandler
     {
         private readonly DiscordSocketClient _client;
         private readonly Config _config;
         private readonly LogHandler _logger;
-
+        
         public SocketTextChannel LogChannel
         {
             get
             {
-                var guild = _client.GetGuild(446832659377946625);
-                var channel = guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelID));
-                return channel;
+                var channel = _client.GetChannel(Convert.ToUInt64(_config.LogChannelID));
+                return (SocketTextChannel) channel;
             }
         }
 
-        public EventHandler(DiscordSocketClient client, LogHandler logger)
+        public ClientEventHandler(DiscordSocketClient client, LogHandler logger)
         {
-            // Set everything we need from DI
             _client = client;
             _config ??= new ConfigHandler().GetConfig();
             _logger = logger;
         }
 
-        public void InitializeEvents()
+        // Create WebSocket-based command context based on message
+        public async Task InitializeEvents()
         {
-            // Create WebSocket-based command context based on message
             _client.ChannelCreated += ChannelCreated;
             _client.ChannelDestroyed += ChannelDestroyed;
             _client.ChannelUpdated += ChannelUpdated;
@@ -205,10 +203,14 @@ namespace Bot.Handlers
 
         private async Task UserJoined(SocketGuildUser user)
         {
+            var title = "User Joined";
+            await LogChannel.SendMessageAsync(embed: EmbedHandler.Good(title: title, user: user));
         }
 
         private async Task UserLeft(SocketGuildUser user)
         {
+            var title = "User Left";
+            await LogChannel.SendMessageAsync(embed: EmbedHandler.Bad(title: title, user: user));
         }
 
         private async Task UserUnbanned(SocketUser user, SocketGuild guild)
@@ -217,14 +219,14 @@ namespace Bot.Handlers
 
         private async Task UserUpdated(SocketUser oldUser, SocketUser newUser)
         {
-            var message = "User Updated";
-            await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, oldUser: oldUser, newUser: newUser));
-            _logger.Update($"[{message}] {oldUser} => {newUser}");
-
+            //var message = "User Updated";
+            //await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, oldUser: oldUser, newUser: newUser));
+            //_logger.Update($"[{message}] {oldUser} => {newUser}");
         }
 
         private async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState voiceStateBefore, SocketVoiceState voiceStateAfter)
         {
+
         }
     }
 }

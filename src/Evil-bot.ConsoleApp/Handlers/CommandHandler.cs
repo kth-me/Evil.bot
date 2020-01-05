@@ -65,7 +65,7 @@ namespace Bot.Handlers
             var context = new SocketCommandContext(_client, message);
 
             // Delete command message
-            // await message.DeleteAsync();
+            await message.DeleteAsync();
 
             // Execute command with command context along with service provider for precondition checks
             // Result indicates an object stating if command executed successfully (not a return value)

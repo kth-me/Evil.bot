@@ -9,29 +9,24 @@ namespace Bot.Modules.Misc
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
-        private readonly DiscordSocketClient _client;
-        private readonly DiscordSocketClient _guild;
         private readonly Config _config;
-        private readonly LogHandler _logger;
-
-
-        public SocketTextChannel LogChannel
-        {
-            get
-            {
-                var guild = _client.GetGuild(446832659377946625);
-                var channel = guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelID));
-                return channel;
-            }
-        }
-
+        public DiscordSocketClient Client { get; set; }
 
         public SocketGuild Guild
         {
             get
             {
-                var guild = _client.GetGuild(446832659377946625);
+                var guild = Client.GetGuild(446832659377946625);
                 return guild;
+            }
+        }
+
+        public SocketTextChannel LogChannel
+        {
+            get
+            {
+                var channel = Guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelID));
+                return channel;
             }
         }
 
@@ -40,15 +35,9 @@ namespace Bot.Modules.Misc
         [Command("echo")]
         public async Task Echo([Remainder]string message)
         {
+            //await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
             await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
         }
-
-        // [Command("test")]
-        // public async Task Test()
-        // {
-        //     var message = "User Updated";
-        //     await LogChannel.SendMessageAsync(embed: EmbedHandler.Update(message, Owner, Owner));
-        // }
 
         [Command("pick")]
         public async Task Pick([Remainder]string message)
@@ -58,6 +47,7 @@ namespace Bot.Modules.Misc
             var r = new Random();
             var selection = options[r.Next(0, options.Length)];
 
+            //await ReplyAsync(embed: EmbedHandler.Neutral(selection));
             await ReplyAsync(embed: EmbedHandler.Neutral(selection));
         }
 
