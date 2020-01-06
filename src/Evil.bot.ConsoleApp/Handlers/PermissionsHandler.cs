@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace Bot.ConsoleApp.Handlers
+namespace Evil.bot.ConsoleApp.Handlers
 {
     // Inherit from PreconditionAttribute
     public class PermissionsHandler : PreconditionAttribute

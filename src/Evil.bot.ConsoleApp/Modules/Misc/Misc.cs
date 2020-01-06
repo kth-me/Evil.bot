@@ -1,13 +1,12 @@
-﻿using Bot.Handlers;
+﻿using Evil.bot.ConsoleApp.Handlers;
 using Discord.Commands;
 using Discord.WebSocket;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Bot.ConsoleApp.Handlers;
 using Discord;
 
-namespace Bot.Modules.Misc
+namespace Evil.bot.ConsoleApp.Modules.Misc
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {

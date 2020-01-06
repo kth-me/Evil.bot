@@ -1,4 +1,4 @@
-﻿using Bot.Handlers;
+﻿using Evil.bot.ConsoleApp.Handlers;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace Bot
+namespace Evil.bot.ConsoleApp
 {
     internal class Client
     {

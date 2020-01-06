@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bot.Handlers
+namespace Evil.bot.ConsoleApp.Handlers
 {
     public class LogHandler
     {

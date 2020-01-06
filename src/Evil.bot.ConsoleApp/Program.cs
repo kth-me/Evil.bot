@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Bot
+namespace Evil.bot.ConsoleApp
 {
     internal class Program
     {

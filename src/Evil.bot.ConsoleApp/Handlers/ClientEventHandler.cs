@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
 
-namespace Bot.Handlers
+namespace Evil.bot.ConsoleApp.Handlers
 {
     /// <summary>
     /// Put your subscriptions to events here!

@@ -1,4 +1,4 @@
-﻿namespace Bot
+﻿namespace Evil.bot.ConsoleApp
 {
     // Structure of config.json file
     public class Config

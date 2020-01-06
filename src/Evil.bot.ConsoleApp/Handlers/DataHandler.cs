@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Bot.Handlers
+namespace Evil.bot.ConsoleApp.Handlers
 {
     internal class DataHandler
     {

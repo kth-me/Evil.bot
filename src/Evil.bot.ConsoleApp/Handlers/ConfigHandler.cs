@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Bot.Handlers
+namespace Evil.bot.ConsoleApp.Handlers
 {
     internal class ConfigHandler
     {

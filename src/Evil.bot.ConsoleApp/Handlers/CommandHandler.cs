@@ -5,7 +5,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Bot.Handlers
+namespace Evil.bot.ConsoleApp.Handlers
 {
     public class CommandHandler
     {
