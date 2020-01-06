@@ -48,10 +48,29 @@ namespace Evil.bot.ConsoleApp.Handlers
                 embed.WithTitle($"{icon} {title}");
                 embed.WithFooter($"{DateTime.Now:HH:mm:ss}");
 
+                if (title == "whois")
+                {
+                    embed.AddField($"Mention", user.Mention, false);
+                    embed.AddField($"Username", $"{user.Username}#{user.Discriminator}", true);
+                    if (user.Nickname != null)
+                        embed.AddField($"Nickname", user.Nickname, true);
+                    embed.AddField($"ID", user.Id, true);
+                    embed.AddField($"Status", user.Status, false);
+                    
+                    foreach (var role in user.Roles)
+                    {
+                        embed.AddField($"Role", role, false);
+                    }
+                    
+                    embed.AddField($"Joined Server", user.JoinedAt, true);
+                    embed.AddField($"Joined Discord", user.CreatedAt, true);
+                    embed.WithThumbnailUrl(user.GetAvatarUrl());
+                    return embed.Build();
+                }
 
                 if (title == "Guild Member Updated")
                 {
-                    embed.WithDescription($"{userAfter.Mention}‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎");
+                    embed.WithDescription($"{userAfter.Mention}‎‎‎‎‏‏‎‎");
                     embed.AddField($"Old Status", userBefore.Status, true);
                     embed.AddField($"New Status", userAfter.Status, true);
                     return embed.Build();
@@ -68,7 +87,7 @@ namespace Evil.bot.ConsoleApp.Handlers
 
                 if (title == "User Updated")
                 {
-                    embed.WithDescription($"{newUser.Mention}‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎");
+                    embed.WithDescription($"{newUser.Mention}‎‎‎‎‏‏‎‎");
                     embed.AddField($"Old Username", oldUser.Status, true);
                     embed.AddField($"New Username", newUser.Status, true);
                     return embed.Build();
@@ -76,7 +95,7 @@ namespace Evil.bot.ConsoleApp.Handlers
 
                 if (title == "User Voice State Updated")
                 {
-                    embed.WithDescription($"{newUser.Mention}‎‎‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎");
+                    embed.WithDescription($"{newUser.Mention}‎‎‎‎‏‏‎‎");
                     embed.AddField($"Old Username", oldUser.Status, true);
                     embed.AddField($"New Username", newUser.Status, true);
                     return embed.Build();

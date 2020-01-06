@@ -36,8 +36,16 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
         [Command("echo")]
         public async Task Echo([Remainder]string message)
         {
-            //await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
             await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
+        }
+
+
+        [Command("whois")]
+        [Remarks("Get detailed user information")]
+        public async Task WhoIs(SocketGuildUser user)
+        {
+            var title = "whois";
+            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Info(title: title, user: user));
         }
 
         [Command("pick")]
