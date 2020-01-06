@@ -9,13 +9,15 @@
 *.user
 *.userosscache
 *.sln.docstates
-config.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
 # Mono auto generated files
 mono_crash.*
+
+# Sensitive config data
+config.json
 
 # Build results
 [Dd]ebug/
@@ -26,19 +28,19 @@ x64/
 x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
-build/
 bld/
+build/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
 
-out/
-
-# Visual Studio 2015/2017/2019 cache/options directory
+# Visual Studio 2015/2017 cache/options directory
 .vs/
-# Visual Studio Code cache/options directory
+
+# Visual Studio Code directory
 .vscode/
+
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -132,9 +134,6 @@ $tf/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
-
-# JustCode is a .NET coding add-in
-.JustCode
 
 # TeamCity is a build add-in
 _TeamCity*
