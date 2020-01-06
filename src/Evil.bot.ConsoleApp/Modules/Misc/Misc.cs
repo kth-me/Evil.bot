@@ -44,8 +44,33 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
         [Remarks("Get detailed user information")]
         public async Task WhoIs(SocketGuildUser user)
         {
-            var title = "whois";
-            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Info(title: title, user: user));
+
+            // Need to better integrate this with EmbedHandler without 
+            // code becoming too tightly coupled
+
+            var embed = new EmbedBuilder();
+
+            embed.WithTitle($"ℹ WHOIS");
+            embed.WithFooter($"Today at {DateTime.Now:HH:mm:ss}");
+            embed.WithColor(new Color(59, 136, 195));
+            embed.AddField($"Mention", user.Mention, false);
+            embed.AddField($"Username", $"{user.Username}#{user.Discriminator}", true);
+            if (user.Nickname != null)
+                embed.AddField($"Nickname", user.Nickname, true);
+            embed.AddField($"ID", user.Id, true);
+            embed.AddField($"Status", user.Status, false);
+
+            foreach (var role in user.Roles)
+            {
+                embed.AddField($"Role", role, false);
+            }
+
+            embed.AddField($"Joined Server", user.JoinedAt, true);
+            embed.AddField($"Joined Discord", user.CreatedAt, true);
+            embed.WithThumbnailUrl(user.GetAvatarUrl());
+            await Context.Channel.SendMessageAsync(embed: embed.Build());
+
+
         }
 
         [Command("pick")]
