@@ -51,7 +51,7 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
             var embed = new EmbedBuilder();
 
             embed.WithTitle($"ℹ WHOIS");
-            embed.WithFooter($"Today at {DateTime.Now:HH:mm:ss}");
+            //embed.WithFooter($"Today at {DateTime.Now:HH:mm:ss}");
             embed.WithColor(new Color(59, 136, 195));
             embed.AddField($"Mention", user.Mention, false);
             embed.AddField($"Username", $"{user.Username}#{user.Discriminator}", true);
@@ -59,6 +59,7 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
                 embed.AddField($"Nickname", user.Nickname, true);
             embed.AddField($"ID", user.Id, true);
             embed.AddField($"Status", user.Status, false);
+            embed.WithCurrentTimestamp();
 
             foreach (var role in user.Roles)
             {
