@@ -42,7 +42,6 @@ namespace Evil.bot.ConsoleApp
 
         public async Task InitializeAsync()
         {
-            // Hook up events
             HookEvents();
 
             // Login with client and start
@@ -55,7 +54,7 @@ namespace Evil.bot.ConsoleApp
             await Task.Delay(-1);
         }
 
-        // Hook up any command specific events
+        // Hook up events
         private void HookEvents()
         {
             _client.Log += LogAsync;

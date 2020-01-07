@@ -16,12 +16,11 @@ namespace Evil.bot.ConsoleApp.Handlers
         private readonly IServiceProvider _services;
 
         /// <summary>
-        /// Allows us to get everything need from DI when  class is instantiated.
+        /// Allows us to get everything need from DI when class is instantiated.
         /// </summary>
         /// <returns></returns>
         public CommandHandler(IServiceProvider services, DiscordSocketClient client, CommandService commands, LogHandler logger)
         {
-            // Set everything we need from DI
             _client = client;
             _commands = commands;
             _config ??= new ConfigHandler().GetConfig();
@@ -32,13 +31,11 @@ namespace Evil.bot.ConsoleApp.Handlers
         // Task called to create command service
         public async Task InitializeAsync()
         {
-            await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(), _services);
-
-            // Hook up events
             HookEvents();
+            await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(), _services);
         }
 
-        // Hook up any command specific events
+        // Hook up events
         private void HookEvents()
         {
             _client.MessageReceived += OnMessageReceivedAsync;
