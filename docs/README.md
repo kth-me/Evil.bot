@@ -9,7 +9,7 @@
 </a>
 
 <a href="LICENSE">
-    <img src="https://img.shields.io/github/license/kth-me/Evil-bot?color=informational" alt="License">
+    <img src="https://img.shields.io/github/license/kth-me/Evil-bot" alt="License">
 </a>
 
 <a href="https://github.com/kth-me/Evil-bot/graphs/contributors">
