@@ -1,12 +1,13 @@
 ![Evil.bot](https://benjaminhook.dev/files/github_header.png) 
 
+<a href="https://github.com/kth-me/Evil.bot/actions">
+    <img src="https://img.shields.io/github/workflow/status/kth-me/Evil.bot/dotnetcore" alt="Workflow Status">
+</a>
+
 <a href="https://github.com/kth-me/Evil-bot/releases">
     <img src="https://img.shields.io/github/v/release/kth-me/Evil-bot?include_prereleases" alt="Releases">
 </a>
 
-<a href="https://github.com/kth-me/Evil.bot/actions">
-    <img src="https://img.shields.io/github/workflow/status/kth-me/Evil.bot/dotnetcore" alt="Workflow Status">
-</a>
 <a href="LICENSE">
     <img src="https://img.shields.io/github/license/kth-me/Evil-bot?color=informational" alt="License">
 </a>
