@@ -46,7 +46,8 @@ namespace Evil.bot.ConsoleApp.Handlers
             else
             {
                 embed.WithTitle($"{icon} {title}");
-                embed.WithFooter($"Today at {DateTime.Now:HH:mm:ss}");
+                //embed.WithFooter($"Today at {DateTime.Now:HH:mm:ss}");
+                embed.WithCurrentTimestamp();
 
                 if (title == "whois")
                 {
