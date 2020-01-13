@@ -5,6 +5,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using Evil.bot.ConsoleApp.Models;
 
 namespace Evil.bot.ConsoleApp
 {
@@ -12,11 +13,11 @@ namespace Evil.bot.ConsoleApp
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
-        private readonly Config _config;
+        private readonly ConfigModel _config;
         private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 
-        public Client(CommandService commands = null, Config config = null, LogHandler logger = null)
+        public Client(CommandService commands = null, ConfigModel configModel = null, LogHandler logger = null)
         {
             // Create new DiscordClient
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -34,8 +35,8 @@ namespace Evil.bot.ConsoleApp
                 LogLevel = LogSeverity.Verbose
             });
 
-            // Set up config, logger, and services
-            _config = config ?? new ConfigHandler().GetConfig();
+            // Set up configModel, logger, and services
+            _config = configModel ?? new ConfigHandler().GetConfig();
             _logger = logger ?? new LogHandler();
             _services = ConfigureServices();
         }
@@ -61,10 +62,10 @@ namespace Evil.bot.ConsoleApp
             _client.Ready += OnReadyAsync;
         }
 
-        // When client sends event indicating it is ready, set the Now Playing to what is in config.json
+        // When client sends event indicating it is ready, set the Now Playing to what is in configModel.json
         private async Task OnReadyAsync()
         {
-            await _client.SetGameAsync(name: _config.Status);
+            await _client.SetGameAsync(name: _config.PlayingStatus);
         }
 
         // Display log messages to the console.

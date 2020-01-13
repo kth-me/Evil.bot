@@ -5,13 +5,23 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Addons.CommandsExtension;
+using Evil.bot.ConsoleApp.Models;
 
 namespace Evil.bot.ConsoleApp.Modules.Misc
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
-        private readonly Config _config;
+        private readonly ConfigModel _config;
         public DiscordSocketClient Client { get; set; }
+
+        private readonly CommandService _commandService;
+
+        public Misc(CommandService commandService)
+        {
+            _commandService = commandService;
+            _config ??= new ConfigHandler().GetConfig();
+        }
 
         public SocketGuild Guild
         {
@@ -31,12 +41,19 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
             }
         }
 
-        public SocketUser Owner => Guild.Owner;
 
-        [Command("echo")]
+        [Command("help"), Summary("Show help menu")]
+        public async Task Help([Remainder] string command = null)
+        {
+            var helpEmbed = _commandService.GetDefaultHelpEmbed(command, _config.Prefix);
+            await Context.Channel.SendMessageAsync(embed: helpEmbed);
+        }
+
+
+        [Command("echo"), Summary("Repeat entered text")]
         public async Task Echo([Remainder]string message)
         {
-            await Context.Channel.SendMessageAsync(embed: EmbedHandler.Neutral(message));
+            await Context.Channel.SendMessageAsync($">>> {message}");
         }
 
 

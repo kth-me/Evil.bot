@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Evil.bot.ConsoleApp.Models;
 
 namespace Evil.bot.ConsoleApp.Handlers
 {
@@ -11,7 +12,7 @@ namespace Evil.bot.ConsoleApp.Handlers
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
-        private readonly Config _config;
+        private readonly ConfigModel _config;
         private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 

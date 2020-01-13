@@ -35,6 +35,7 @@ namespace Evil.bot.ConsoleApp.Handlers
         {
             var embed = new EmbedBuilder();
 
+
             embed.WithColor(color);
 
             if (title == null)

@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using Evil.bot.ConsoleApp.Models;
 
 namespace Evil.bot.ConsoleApp.Handlers
 {
@@ -15,30 +16,30 @@ namespace Evil.bot.ConsoleApp.Handlers
         /// Get information from config.json file for use with bot.
         /// </summary>
         /// <returns></returns>
-        public Config GetConfig()
+        public ConfigModel GetConfig()
             => GetConfigData();
 
         /// <summary>
         /// Private function to hide implementation of this method.
         /// </summary>
         /// <returns></returns>
-        private Config GetConfigData()
+        private ConfigModel GetConfigData()
         {
             CheckConfigExists();
             var data = File.ReadAllText(_configLocation);
-            return JsonConvert.DeserializeObject<Config>(data);
+            return JsonConvert.DeserializeObject<ConfigModel>(data);
         }
 
         /// <summary>
         /// Generate config.json file with default values.
         /// </summary>
         /// <returns></returns>
-        private Config GenerateDefaultConfig()
-            => new Config
+        private ConfigModel GenerateDefaultConfig()
+            => new ConfigModel
             {
                 Token = "",
                 Prefix = ".",
-                Status = "Ready",
+                PlayingStatus = "Ready",
                 LogChannelID = "457063331518349315",
                 AdminRoleID = "562545625057722389",
                 ModRoleID = "562554195887128576"

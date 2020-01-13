@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
+using Evil.bot.ConsoleApp.Models;
 
 namespace Evil.bot.ConsoleApp.Handlers
 {
@@ -12,7 +13,7 @@ namespace Evil.bot.ConsoleApp.Handlers
     public class ClientEventHandler
     {
         private readonly DiscordSocketClient _client;
-        private readonly Config _config;
+        private readonly ConfigModel _config;
         private readonly LogHandler _logger;
         
         public SocketTextChannel LogChannel
