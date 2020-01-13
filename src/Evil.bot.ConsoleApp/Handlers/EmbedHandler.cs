@@ -79,7 +79,8 @@ namespace Evil.bot.ConsoleApp.Handlers
 
                 if (title == "User Joined" || title == "User Left")
                 {
-                    embed.WithDescription($"{user.Mention}");
+                    embed.WithTitle($"{icon} {title}: {user.Mention}");
+                    embed.WithDescription($"{user.Username}#{user.Discriminator}");
                     embed.AddField($"Joined Server", user.JoinedAt, true);
                     embed.AddField($"Joined Discord", user.CreatedAt, true);
                     embed.WithThumbnailUrl(user.GetAvatarUrl());
