@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Evil.bot.ConsoleApp
+﻿namespace Evil.bot.ConsoleApp
 {
+    using System.Threading.Tasks;
+
     internal class Program
     {
         private static Task Main()

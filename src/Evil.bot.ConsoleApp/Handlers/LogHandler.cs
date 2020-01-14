@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
-
-namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evil.bot.ConsoleApp.Handlers
 {
+    using System;
+
     public class LogHandler
     {
         //public LogHandler(DiscordSocketClient client, CommandService command)

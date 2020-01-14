@@ -1,13 +1,13 @@
-﻿using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using Evil.bot.ConsoleApp.Models;
-
-namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evil.bot.ConsoleApp.Handlers
 {
+    using Discord;
+    using Discord.Commands;
+    using Discord.WebSocket;
+    using Evil.bot.ConsoleApp.Models;
+    using System;
+    using System.Reflection;
+    using System.Threading.Tasks;
+
     public class CommandHandler
     {
         private readonly DiscordSocketClient _client;

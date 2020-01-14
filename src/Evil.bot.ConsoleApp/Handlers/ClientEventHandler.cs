@@ -1,8 +1,8 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Evil.bot.ConsoleApp.Models;
 using System;
 using System.Threading.Tasks;
-using Evil.bot.ConsoleApp.Models;
 
 namespace Evil.bot.ConsoleApp.Handlers
 {
@@ -15,13 +15,13 @@ namespace Evil.bot.ConsoleApp.Handlers
         private readonly DiscordSocketClient _client;
         private readonly ConfigModel _config;
         private readonly LogHandler _logger;
-        
+
         public SocketTextChannel LogChannel
         {
             get
             {
-                var channel = _client.GetChannel(Convert.ToUInt64(_config.LogChannelID));
-                return (SocketTextChannel) channel;
+                var channel = _client.GetChannel(Convert.ToUInt64(_config.LogChannelId));
+                return (SocketTextChannel)channel;
             }
         }
 

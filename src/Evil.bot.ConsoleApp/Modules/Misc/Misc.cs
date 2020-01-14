@@ -1,14 +1,14 @@
-﻿using Evil.bot.ConsoleApp.Handlers;
+﻿using Discord;
+using Discord.Addons.CommandsExtension;
 using Discord.Commands;
 using Discord.WebSocket;
+using Evil.bot.ConsoleApp.Handlers;
+using Evil.bot.ConsoleApp.Models;
+using Evil.bot.ConsoleApp.Preconditions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.Addons.CommandsExtension;
-using Evil.bot.ConsoleApp.Models;
-using Evil.bot.ConsoleApp.Preconditions;
 
 namespace Evil.bot.ConsoleApp.Modules.Misc
 {
@@ -38,11 +38,10 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
         {
             get
             {
-                var channel = Guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelID));
+                var channel = Guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelId));
                 return channel;
             }
         }
-
 
         [Command("help"), Summary("Show help menu")]
         public async Task Help([Remainder] string command = null)
@@ -51,26 +50,24 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
             await Context.Channel.SendMessageAsync(embed: helpEmbed);
         }
 
-
         [Command("echo"), Summary("Repeat entered text")]
         public async Task Echo([Remainder]string message)
         {
             await Context.Channel.SendMessageAsync($">>> {message}");
         }
 
-        [Command("test"), Summary("Repeat entered text")][RequireSpecificRole("*Staff")]
+        [Command("test"), Summary("Repeat entered text")]
+        [RequireSpecificRole("*Staff")]
         public async Task Test([Remainder]string message)
         {
             await Context.Channel.SendMessageAsync($">>> {message}");
         }
 
-
         [Command("whois")]
         [Remarks("Get detailed user information")]
         public async Task WhoIs(SocketGuildUser user)
         {
-
-            // Need to better integrate this with EmbedHandler without 
+            // Need to better integrate this with EmbedHandler without
             // code becoming too tightly coupled
 
             var embed = new EmbedBuilder();
@@ -85,7 +82,6 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
             embed.AddField($"Status", user.Status, false);
             embed.WithCurrentTimestamp();
 
-
             var rolesList = new List<string>();
             foreach (var role in user.Roles)
             {
@@ -95,7 +91,6 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
 
             // var rolesString = String.Join(", ", rolesList.ToArray());
             // embed.AddField($"Role", rolesString, false);
-
 
             embed.AddField($"Joined Server", user.JoinedAt, true);
             embed.AddField($"Joined Discord", user.CreatedAt, true);

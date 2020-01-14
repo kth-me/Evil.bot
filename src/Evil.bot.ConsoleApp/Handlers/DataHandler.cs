@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
-
-namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evil.bot.ConsoleApp.Handlers
 {
+    using System.Collections.Generic;
+    using System.IO;
+
+    using Newtonsoft.Json;
+
     internal class DataHandler
     {
         private static readonly Dictionary<string, string> _alerts;
@@ -17,12 +18,12 @@ namespace Evil.bot.ConsoleApp.Handlers
 
         public static string GetAlert(string key)
         {
-            return _alerts.ContainsKey(key) ? _alerts[key] : "";
+            return _alerts.ContainsKey(key) ? _alerts[key] : string.Empty;
         }
 
         public static string GetFormattedAlert(string key, params object[] parameter)
         {
-            return _alerts.ContainsKey(key) ? string.Format(_alerts[key], parameter) : "";
+            return _alerts.ContainsKey(key) ? string.Format(_alerts[key], parameter) : string.Empty;
         }
 
         /*public static string GetFormattedAlert(string key, object parameter)

@@ -3,10 +3,15 @@
     public class ConfigModel
     {
         public string Token { get; set; }
+
         public string PlayingStatus { get; set; }
+
         public string Prefix { get; set; }
-        public string LogChannelID { get; set; }
-        public string AdminRoleID { get; set; }
-        public string ModRoleID { get; set; }
+
+        public string LogChannelId { get; set; }
+
+        public string AdminRoleId { get; set; }
+
+        public string ModRoleId { get; set; }
     }
 }

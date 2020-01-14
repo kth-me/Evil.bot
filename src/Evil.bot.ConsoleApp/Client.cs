@@ -1,14 +1,18 @@
-﻿using Evil.bot.ConsoleApp.Handlers;
-using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
-using Evil.bot.ConsoleApp.Models;
-
+﻿
 namespace Evil.bot.ConsoleApp
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Discord;
+    using Discord.Commands;
+    using Discord.WebSocket;
+
+    using Evil.bot.ConsoleApp.Handlers;
+    using Evil.bot.ConsoleApp.Models;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     internal class Client
     {
         private readonly DiscordSocketClient _client;

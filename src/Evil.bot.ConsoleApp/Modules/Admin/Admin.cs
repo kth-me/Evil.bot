@@ -1,14 +1,8 @@
-﻿using Evil.bot.ConsoleApp.Handlers;
-using Discord.Commands;
-using Discord.WebSocket;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Evil.bot.ConsoleApp.Modules.Misc
+﻿namespace Evil.bot.ConsoleApp.Modules.Misc
 {
+    using Discord.Commands;
+
     public class Admin : ModuleBase<SocketCommandContext>
     {
-        
     }
 }

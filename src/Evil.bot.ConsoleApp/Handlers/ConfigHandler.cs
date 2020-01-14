@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Text;
-using Evil.bot.ConsoleApp.Models;
-
-namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evil.bot.ConsoleApp.Handlers
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
+    using Evil.bot.ConsoleApp.Models;
+
+    using Newtonsoft.Json;
+
     internal class ConfigHandler
     {
         private const string _dataDirectory = "Data";
@@ -40,9 +42,9 @@ namespace Evil.bot.ConsoleApp.Handlers
                 Token = "",
                 Prefix = ".",
                 PlayingStatus = "Ready",
-                LogChannelID = "457063331518349315",
-                AdminRoleID = "562545625057722389",
-                ModRoleID = "562554195887128576"
+                LogChannelId = "457063331518349315",
+                AdminRoleId = "562545625057722389",
+                ModRoleId = "562554195887128576"
             };
 
         /// <summary>
