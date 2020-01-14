@@ -4,16 +4,18 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace Evil.bot.ConsoleApp.Handlers
+namespace Evil.bot.ConsoleApp.Preconditions
 {
     // Inherit from PreconditionAttribute
-    public class PermissionsHandler : PreconditionAttribute
+    public class RequireSpecificRole : PreconditionAttribute
     {
-        // Create a field to store the specified name
         private readonly string _name;
 
         // Create a constructor so the name can be specified
-        public PermissionsHandler(string name) => _name = name;
+        public RequireSpecificRole(string name)
+        {
+            _name = name;
+        }
 
         // Override the CheckPermissions method
         public override Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)

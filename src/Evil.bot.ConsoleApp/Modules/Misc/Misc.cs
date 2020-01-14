@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Addons.CommandsExtension;
 using Evil.bot.ConsoleApp.Models;
+using Evil.bot.ConsoleApp.Preconditions;
 
 namespace Evil.bot.ConsoleApp.Modules.Misc
 {
@@ -53,6 +54,12 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
 
         [Command("echo"), Summary("Repeat entered text")]
         public async Task Echo([Remainder]string message)
+        {
+            await Context.Channel.SendMessageAsync($">>> {message}");
+        }
+
+        [Command("test"), Summary("Repeat entered text")][RequireSpecificRole("*Staff")]
+        public async Task Test([Remainder]string message)
         {
             await Context.Channel.SendMessageAsync($">>> {message}");
         }
