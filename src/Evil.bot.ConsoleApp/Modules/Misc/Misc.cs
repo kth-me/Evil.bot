@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -68,7 +69,6 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
             var embed = new EmbedBuilder();
 
             embed.WithTitle($"ℹ WHOIS");
-            //embed.WithFooter($"Today at {DateTime.Now:HH:mm:ss}");
             embed.WithColor(new Color(59, 136, 195));
             embed.AddField($"Mention", user.Mention, false);
             embed.AddField($"Username", $"{user.Username}#{user.Discriminator}", true);
@@ -78,17 +78,22 @@ namespace Evil.bot.ConsoleApp.Modules.Misc
             embed.AddField($"Status", user.Status, false);
             embed.WithCurrentTimestamp();
 
+
+            var rolesList = new List<string>();
             foreach (var role in user.Roles)
             {
-                embed.AddField($"Role", role, false);
+                rolesList.Add(role.Name);
             }
+            // rolesList = rolesList.Where(role =>
+
+            // var rolesString = String.Join(", ", rolesList.ToArray());
+            // embed.AddField($"Role", rolesString, false);
+
 
             embed.AddField($"Joined Server", user.JoinedAt, true);
             embed.AddField($"Joined Discord", user.CreatedAt, true);
             embed.WithThumbnailUrl(user.GetAvatarUrl());
             await Context.Channel.SendMessageAsync(embed: embed.Build());
-
-
         }
 
         [Command("pick")]
