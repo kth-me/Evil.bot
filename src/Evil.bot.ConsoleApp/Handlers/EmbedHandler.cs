@@ -165,11 +165,12 @@
 
                 if (title == "User Joined" || title == "User Left")
                 {
-                    embed.WithTitle($"{icon} {title}: {user.Mention}");
+                    embed.WithTitle($"{icon} {title}");
+                    embed.WithDescription(user.Mention);
                     embed.AddField($"Username", $"{user.Username}#{user.Discriminator}", true);
                     embed.AddField($"ID", user.Id, true);
-                    embed.AddField($"Joined Server", user.JoinedAt, true);
-                    embed.AddField($"Joined Discord", user.CreatedAt, true);
+                    embed.AddField($"Joined Server", user.JoinedAt, false);
+                    embed.AddField($"Joined Discord", user.CreatedAt, false);
                     embed.WithThumbnailUrl(user.GetAvatarUrl());
                     return embed.Build();
                 }

@@ -33,9 +33,9 @@
             // Create new CommandService
             _commands = commands ?? new CommandService(new CommandServiceConfig
             {
+                LogLevel = LogSeverity.Verbose,
                 DefaultRunMode = RunMode.Async,
-                CaseSensitiveCommands = false,
-                LogLevel = LogSeverity.Verbose
+                CaseSensitiveCommands = false
             });
 
             // Set up configModel, logger, and services
