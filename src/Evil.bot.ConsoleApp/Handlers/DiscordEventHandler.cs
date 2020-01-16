@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace Evil.bot.ConsoleApp.Handlers
 {
+    using Discord.Commands;
+
     /// <summary>
     /// Put your subscriptions to events here!
     /// Just one non awaited async Method per functionality you want to provide
     /// </summary>
-    public class ClientEventHandler
+    public class DiscordEventHandler
     {
         private readonly DiscordSocketClient _client;
+        private readonly CommandService _commands;
         private readonly ConfigModel _config;
         private readonly LogHandler _logger;
 
@@ -25,15 +28,16 @@ namespace Evil.bot.ConsoleApp.Handlers
             }
         }
 
-        public ClientEventHandler(DiscordSocketClient client, LogHandler logger)
+        public DiscordEventHandler(DiscordSocketClient client, CommandService commands, LogHandler logger)
         {
             _client = client;
+            _commands = commands;
             _config ??= new ConfigHandler().GetConfig();
             _logger = logger;
         }
 
         // Create WebSocket-based command context based on message
-        public async Task InitializeEvents()
+        public async Task InitializeAsync()
         {
             _client.ChannelCreated += ChannelCreated;
             _client.ChannelDestroyed += ChannelDestroyed;
@@ -50,6 +54,7 @@ namespace Evil.bot.ConsoleApp.Handlers
             _client.LatencyUpdated += LatencyUpdated;
             _client.LeftGuild += LeftGuild;
             _client.Log += Log;
+            _commands.Log += Log;
             _client.LoggedIn += LoggedIn;
             _client.LoggedOut += LoggedOut;
             _client.MessageDeleted += MessageDeleted;
@@ -76,6 +81,7 @@ namespace Evil.bot.ConsoleApp.Handlers
         private async Task ChannelCreated(SocketChannel channel)
         {
             _logger.Info($"Channel {channel} created");
+            _logger.ChannelCreated(channel);
         }
 
         private async Task ChannelDestroyed(SocketChannel channel)
@@ -136,6 +142,7 @@ namespace Evil.bot.ConsoleApp.Handlers
 
         private async Task Log(LogMessage logMessage)
         {
+            _logger.Neutral(logMessage.Message);
         }
 
         private async Task LoggedIn()
@@ -172,6 +179,7 @@ namespace Evil.bot.ConsoleApp.Handlers
 
         private async Task Ready()
         {
+            await _client.SetGameAsync(name: _config.PlayingStatus);
         }
 
         private async Task RecipientAdded(SocketGroupUser user)
