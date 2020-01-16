@@ -41,7 +41,6 @@
         {
             _client.MessageReceived += OnMessageReceivedAsync;
             _commands.CommandExecuted += OnCommandExecutedAsync;
-            _commands.Log += LogAsync;
         }
 
         private async Task OnMessageReceivedAsync(SocketMessage socketMessage)
@@ -93,13 +92,6 @@
             // Command succeeded. Log to console
             _logger.Good($"[Command Success] {context.User.Username}#{context.User.Discriminator} used .{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name}");
             return;
-        }
-
-        // Display log messages to the console.
-        private Task LogAsync(LogMessage log)
-        {
-            _logger.Neutral(log.Message);
-            return Task.CompletedTask;
         }
 
         private string ResultCleaner(string result)

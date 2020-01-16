@@ -1,5 +1,4 @@
-﻿
-namespace Evil.bot.ConsoleApp
+﻿namespace Evil.bot.ConsoleApp
 {
     using System;
     using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace Evil.bot.ConsoleApp
         private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 
-        public Client(CommandService commands = null, ConfigModel configModel = null, LogHandler logger = null)
+        public Client(CommandService commands = null, ConfigModel config = null, LogHandler logger = null)
         {
             // Create new DiscordClient
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -40,43 +39,23 @@ namespace Evil.bot.ConsoleApp
             });
 
             // Set up configModel, logger, and services
-            _config = configModel ?? new ConfigHandler().GetConfig();
+            _config = config ?? new ConfigHandler().GetConfig();
             _logger = logger ?? new LogHandler();
             _services = ConfigureServices();
         }
 
         public async Task InitializeAsync()
         {
-            HookEvents();
+            // Initialize DiscordEventHandler and CommandHandler services
+            await _services.GetRequiredService<CommandHandler>().InitializeAsync();
+            await _services.GetRequiredService<DiscordEventHandler>().InitializeAsync();
 
             // Login with client and start
             await _client.LoginAsync(TokenType.Bot, _config.Token);
             await _client.StartAsync();
 
-            // Initialize CommandHandler and ClientEventHandler and prevent bot from shutting down instantly
-            await _services.GetRequiredService<CommandHandler>().InitializeAsync();
-            await _services.GetRequiredService<ClientEventHandler>().InitializeEvents();
+            // Prevent bot from self-terminating
             await Task.Delay(-1);
-        }
-
-        // Hook up events
-        private void HookEvents()
-        {
-            _client.Log += LogAsync;
-            _client.Ready += OnReadyAsync;
-        }
-
-        // When client sends event indicating it is ready, set the Now Playing to what is in configModel.json
-        private async Task OnReadyAsync()
-        {
-            await _client.SetGameAsync(name: _config.PlayingStatus);
-        }
-
-        // Display log messages to the console.
-        private Task LogAsync(LogMessage log)
-        {
-            _logger.Neutral(log.Message);
-            return Task.CompletedTask;
         }
 
         // Used to add any services to the DI Service Provider
@@ -87,7 +66,7 @@ namespace Evil.bot.ConsoleApp
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
                 .AddSingleton<CommandHandler>()
-                .AddSingleton<ClientEventHandler>()
+                .AddSingleton<DiscordEventHandler>()
                 .AddSingleton<ConfigHandler>()
                 .AddSingleton<LogHandler>()
                 .BuildServiceProvider();
