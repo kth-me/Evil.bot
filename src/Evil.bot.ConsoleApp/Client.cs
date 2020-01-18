@@ -17,7 +17,8 @@
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly ConfigModel _config;
-        private readonly LogHandler _logger;
+
+        //private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 
         public Client(CommandService commands = null, ConfigModel config = null, LogHandler logger = null)
@@ -27,7 +28,7 @@
             {
                 LogLevel = LogSeverity.Verbose,
                 AlwaysDownloadUsers = true,
-                MessageCacheSize = 100
+                MessageCacheSize = 500
             });
 
             // Create new CommandService
@@ -38,16 +39,17 @@
                 CaseSensitiveCommands = false
             });
 
-            // Set up configModel, logger, and services
+            // Set up config and services for use in initialization
             _config = config ?? new ConfigHandler().GetConfig();
-            _logger = logger ?? new LogHandler();
+            //_logger = logger ?? new LogHandler();
             _services = ConfigureServices();
         }
 
         public async Task InitializeAsync()
         {
-            // Initialize DiscordEventHandler and CommandHandler services
+            // Initialize CommandHandler, LogHandler, and DiscordEventHandler services
             await _services.GetRequiredService<CommandHandler>().InitializeAsync();
+            await _services.GetRequiredService<LogHandler>().InitializeAsync();
             await _services.GetRequiredService<DiscordEventHandler>().InitializeAsync();
 
             // Login with client and start
@@ -66,9 +68,9 @@
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
                 .AddSingleton<CommandHandler>()
+                .AddSingleton<LogHandler>()
                 .AddSingleton<DiscordEventHandler>()
                 .AddSingleton<ConfigHandler>()
-                .AddSingleton<LogHandler>()
                 .BuildServiceProvider();
         }
     }

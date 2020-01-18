@@ -1,12 +1,13 @@
-﻿using Discord;
-using Discord.WebSocket;
-using Evil.bot.ConsoleApp.Models;
-using System;
-using System.Threading.Tasks;
-
-namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evil.bot.ConsoleApp.Handlers
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Discord;
+    using Discord.WebSocket;
     using Discord.Commands;
+
+    using Evil.bot.ConsoleApp.Models;
 
     /// <summary>
     /// Put your subscriptions to events here!
@@ -80,13 +81,13 @@ namespace Evil.bot.ConsoleApp.Handlers
 
         private async Task ChannelCreated(SocketChannel channel)
         {
-            _logger.Info($"Channel {channel} created");
-            _logger.ChannelCreated(channel);
+            // _logger.Info($"Channel {channel} created");
+            // _logger.ChannelCreated(channel);
         }
 
         private async Task ChannelDestroyed(SocketChannel channel)
         {
-            _logger.Info($"Channel {channel} destroyed");
+            // _logger.Info($"Channel {channel} destroyed");
         }
 
         private async Task ChannelUpdated(SocketChannel channelBefore, SocketChannel channelAfter)
@@ -142,7 +143,7 @@ namespace Evil.bot.ConsoleApp.Handlers
 
         private async Task Log(LogMessage logMessage)
         {
-            _logger.Neutral(logMessage.Message);
+            //_logger.Neutral(logMessage.Message);
         }
 
         private async Task LoggedIn()

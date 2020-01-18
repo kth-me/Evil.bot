@@ -1,9 +1,13 @@
 ﻿namespace Evil.bot.ConsoleApp.Handlers
 {
     using System;
+    using System.Threading.Tasks;
 
     using Discord;
     using Discord.WebSocket;
+    using Discord.Commands;
+
+    using Evil.bot.ConsoleApp.Models;
 
     public class LogHandler
     {
@@ -26,6 +30,58 @@
 
         //    return Task.CompletedTask;
         //}
+
+        private readonly DiscordSocketClient _client;
+        private readonly CommandService _commands;
+        private readonly ConfigModel _config;
+
+        public LogHandler(DiscordSocketClient client, CommandService commands)
+        {
+            _client = client;
+            _commands = commands;
+            _config ??= new ConfigHandler().GetConfig();
+        }
+
+        public async Task InitializeAsync()
+        {
+            _client.ChannelCreated += ChannelCreated;
+            _client.ChannelDestroyed += ChannelDestroyed;
+            _client.ChannelUpdated += ChannelUpdated;
+            _client.Connected += Connected;
+            _client.CurrentUserUpdated += CurrentUserUpdated;
+            _client.Disconnected += Disconnected;
+            _client.GuildAvailable += GuildAvailable;
+            _client.GuildMembersDownloaded += GuildMembersDownloaded;
+            _client.GuildMemberUpdated += GuildMemberUpdated;
+            _client.GuildUnavailable += GuildUnavailable;
+            _client.GuildUpdated += GuildUpdated;
+            _client.JoinedGuild += JoinedGuild;
+            _client.LatencyUpdated += LatencyUpdated;
+            _client.LeftGuild += LeftGuild;
+            _client.Log += Log;
+            _commands.Log += Log;
+            _client.LoggedIn += LoggedIn;
+            _client.LoggedOut += LoggedOut;
+            _client.MessageDeleted += MessageDeleted;
+            _client.MessageReceived += MessageReceived;
+            _client.MessageUpdated += MessageUpdated;
+            _client.ReactionAdded += ReactionAdded;
+            _client.ReactionRemoved += ReactionRemoved;
+            _client.ReactionsCleared += ReactionsCleared;
+            _client.Ready += Ready;
+            _client.RecipientAdded += RecipientAdded;
+            _client.RecipientRemoved += RecipientRemoved;
+            _client.RoleCreated += RoleCreated;
+            _client.RoleDeleted += RoleDeleted;
+            _client.RoleUpdated += RoleUpdated;
+            _client.UserBanned += UserBanned;
+            _client.UserIsTyping += UserIsTyping;
+            _client.UserJoined += UserJoined;
+            _client.UserLeft += UserLeft;
+            _client.UserUnbanned += UserUnbanned;
+            _client.UserUpdated += UserUpdated;
+            _client.UserVoiceStateUpdated += UserVoiceStateUpdated;
+        }
 
         public void Neutral(string message) => ConsoleLog(message, ConsoleColor.Gray);
 
@@ -55,150 +111,151 @@
             Console.WriteLine($" {message}");
         }
 
-        public void ChannelCreated(SocketChannel channel)
+        private async Task ChannelCreated(SocketChannel channel)
         {
             ConsoleLog($"Channel {channel} created", ConsoleColor.Cyan);
             DiscordLog($"Channel {channel} created", ConsoleColor.Cyan);
         }
 
-        public void ChannelDestroyed(SocketChannel channel)
+        private async Task ChannelDestroyed(SocketChannel channel)
         {
             //_logger.Info($"Channel {channel} destroyed");
         }
 
-        public void ChannelUpdated(SocketChannel channelBefore, SocketChannel channelAfter)
+        private async Task ChannelUpdated(SocketChannel channelBefore, SocketChannel channelAfter)
         {
         }
 
-        public void Connected()
+        private async Task Connected()
         {
         }
 
-        public void CurrentUserUpdated(SocketSelfUser userBefore, SocketSelfUser userAfter)
+        private async Task CurrentUserUpdated(SocketSelfUser userBefore, SocketSelfUser userAfter)
         {
         }
 
-        public void Disconnected(Exception exception)
+        private async Task Disconnected(Exception exception)
         {
         }
 
-        public void GuildAvailable(SocketGuild guild)
+        private async Task GuildAvailable(SocketGuild guild)
         {
         }
 
-        public void GuildMembersDownloaded(SocketGuild guild)
+        private async Task GuildMembersDownloaded(SocketGuild guild)
         {
         }
 
-        public void GuildMemberUpdated(SocketGuildUser userBefore, SocketGuildUser userAfter)
+        private async Task GuildMemberUpdated(SocketGuildUser userBefore, SocketGuildUser userAfter)
         {
         }
 
-        public void GuildUnavailable(SocketGuild guild)
+        private async Task GuildUnavailable(SocketGuild guild)
         {
         }
 
-        public void GuildUpdated(SocketGuild guildBefore, SocketGuild guildAfter)
+        private async Task GuildUpdated(SocketGuild guildBefore, SocketGuild guildAfter)
         {
         }
 
-        public void JoinedGuild(SocketGuild guild)
+        private async Task JoinedGuild(SocketGuild guild)
         {
         }
 
-        public void LatencyUpdated(int latencyBefore, int latencyAfter)
+        private async Task LatencyUpdated(int latencyBefore, int latencyAfter)
         {
         }
 
-        public void LeftGuild(SocketGuild guild)
+        private async Task LeftGuild(SocketGuild guild)
         {
         }
 
-        public void Log(LogMessage logMessage)
+        private async Task Log(LogMessage logMessage)
+        {
+            Neutral(logMessage.Message);
+        }
+
+        private async Task LoggedIn()
         {
         }
 
-        public void LoggedIn()
+        private async Task LoggedOut()
         {
         }
 
-        public void LoggedOut()
+        private async Task MessageDeleted(Cacheable<IMessage, ulong> cacheMessage, ISocketMessageChannel channel)
         {
         }
 
-        public void MessageDeleted(Cacheable<IMessage, ulong> cacheMessage, ISocketMessageChannel channel)
+        private async Task MessageReceived(SocketMessage message)
         {
         }
 
-        public void MessageReceived(SocketMessage message)
+        private async Task MessageUpdated(Cacheable<IMessage, ulong> cacheMessageBefore, SocketMessage messageAfter, ISocketMessageChannel channel)
         {
         }
 
-        public void MessageUpdated(Cacheable<IMessage, ulong> cacheMessageBefore, SocketMessage messageAfter, ISocketMessageChannel channel)
+        private async Task ReactionAdded(Cacheable<IUserMessage, ulong> cacheMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
         }
 
-        public void ReactionAdded(Cacheable<IUserMessage, ulong> cacheMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        private async Task ReactionRemoved(Cacheable<IUserMessage, ulong> cacheMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
         }
 
-        public void ReactionRemoved(Cacheable<IUserMessage, ulong> cacheMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        private async Task ReactionsCleared(Cacheable<IUserMessage, ulong> cacheMessage, ISocketMessageChannel channel)
         {
         }
 
-        public void ReactionsCleared(Cacheable<IUserMessage, ulong> cacheMessage, ISocketMessageChannel channel)
+        private async Task Ready()
         {
         }
 
-        public void Ready()
+        private async Task RecipientAdded(SocketGroupUser user)
         {
         }
 
-        public void RecipientAdded(SocketGroupUser user)
+        private async Task RecipientRemoved(SocketGroupUser user)
         {
         }
 
-        public void RecipientRemoved(SocketGroupUser user)
+        private async Task RoleCreated(SocketRole role)
         {
         }
 
-        public void RoleCreated(SocketRole role)
+        private async Task RoleDeleted(SocketRole role)
         {
         }
 
-        public void RoleDeleted(SocketRole role)
+        private async Task RoleUpdated(SocketRole roleBefore, SocketRole roleAfter)
         {
         }
 
-        public void RoleUpdated(SocketRole roleBefore, SocketRole roleAfter)
+        private async Task UserBanned(SocketUser user, SocketGuild guild)
         {
         }
 
-        public void UserBanned(SocketUser user, SocketGuild guild)
+        private async Task UserIsTyping(SocketUser user, ISocketMessageChannel channel)
         {
         }
 
-        public void UserIsTyping(SocketUser user, ISocketMessageChannel channel)
+        private async Task UserJoined(SocketGuildUser user)
         {
         }
 
-        public void UserJoined(SocketGuildUser user)
+        private async Task UserLeft(SocketGuildUser user)
         {
         }
 
-        public void UserLeft(SocketGuildUser user)
+        private async Task UserUnbanned(SocketUser user, SocketGuild guild)
         {
         }
 
-        public void UserUnbanned(SocketUser user, SocketGuild guild)
+        private async Task UserUpdated(SocketUser oldUser, SocketUser newUser)
         {
         }
 
-        public void UserUpdated(SocketUser oldUser, SocketUser newUser)
-        {
-        }
-
-        public void UserVoiceStateUpdated(SocketUser user, SocketVoiceState voiceStateBefore, SocketVoiceState voiceStateAfter)
+        private async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState voiceStateBefore, SocketVoiceState voiceStateAfter)
         {
         }
     }
