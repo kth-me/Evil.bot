@@ -55,7 +55,6 @@
             _client.LatencyUpdated += LatencyUpdated;
             _client.LeftGuild += LeftGuild;
             _client.Log += Log;
-            _commands.Log += Log;
             _client.LoggedIn += LoggedIn;
             _client.LoggedOut += LoggedOut;
             _client.MessageDeleted += MessageDeleted;
@@ -213,14 +212,14 @@
 
         private async Task UserJoined(SocketGuildUser user)
         {
-            var title = "User Joined";
-            await LogChannel.SendMessageAsync(embed: EmbedHandler.Good(title: title, user: user));
+            // var title = "User Joined";
+            // await LogChannel.SendMessageAsync(embed: EmbedHandler.Good(title: title, user: user));
         }
 
         private async Task UserLeft(SocketGuildUser user)
         {
-            var title = "User Left";
-            await LogChannel.SendMessageAsync(embed: EmbedHandler.Bad(title: title, user: user));
+            // var title = "User Left";
+            // await LogChannel.SendMessageAsync(embed: EmbedHandler.Bad(title: title, user: user));
         }
 
         private async Task UserUnbanned(SocketUser user, SocketGuild guild)

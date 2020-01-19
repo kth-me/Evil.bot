@@ -1,39 +1,28 @@
-﻿namespace Evil.bot.ConsoleApp.Handlers
+﻿
+namespace Evil.bot.ConsoleApp.Handlers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
-
     using Discord;
     using Discord.WebSocket;
     using Discord.Commands;
-
-    using Evil.bot.ConsoleApp.Models;
+    using Models;
 
     public class LogHandler
     {
-        //public LogHandler(DiscordSocketClient client, CommandService command)
-        //{
-        //    client.Log += LogAsync;
-        //    command.Log += LogAsync;
-        //}
-
-        //private Task LogAsync(LogMessage message)
-        //{
-        //    if (message.Exception is CommandException cmdException)
-        //    {
-        //        Console.WriteLine($"[Command/{message.Severity}] {cmdException.Command.Aliases.First()}"
-        //                          + $" failed to execute in {cmdException.Context.Channel}.");
-        //        Console.WriteLine(cmdException);
-        //    }
-        //    else
-        //        Console.WriteLine($"[General/{message.Severity}] {message}");
-
-        //    return Task.CompletedTask;
-        //}
-
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly ConfigModel _config;
+
+        private enum Style
+        {
+            Good,
+            Bad,
+            Info,
+            Alert,
+            Update
+        }
 
         public LogHandler(DiscordSocketClient client, CommandService commands)
         {
@@ -59,7 +48,6 @@
             _client.LatencyUpdated += LatencyUpdated;
             _client.LeftGuild += LeftGuild;
             _client.Log += Log;
-            _commands.Log += Log;
             _client.LoggedIn += LoggedIn;
             _client.LoggedOut += LoggedOut;
             _client.MessageDeleted += MessageDeleted;
@@ -81,29 +69,54 @@
             _client.UserUnbanned += UserUnbanned;
             _client.UserUpdated += UserUpdated;
             _client.UserVoiceStateUpdated += UserVoiceStateUpdated;
+            
+            _commands.Log += CommandLog;
+            _commands.CommandExecuted += OnCommandExecutedAsync;
         }
 
-        public void Neutral(string message) => ConsoleLog(message, ConsoleColor.Gray);
-
-        public void Good(string message) => ConsoleLog(message, ConsoleColor.Green);
-
-        public void Bad(string message) => ConsoleLog(message, ConsoleColor.Red);
-
-        public void Info(string message) => ConsoleLog(message, ConsoleColor.Cyan);
-
-        public void Alert(string message) => ConsoleLog(message, ConsoleColor.Yellow);
-
-        public void Update(string message) => ConsoleLog(message, ConsoleColor.Magenta);
-
-        private void ConsoleLog(string message, ConsoleColor color)
+        private void LogToConsole(Style style, string message = null, LogMessage logMessage = new LogMessage())
         {
-            Console.ForegroundColor = color;
-            Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm:ss}]");
-            Console.ResetColor();
-            Console.WriteLine($" {message}");
-        }
+            var color = style switch
+            {
+                Style.Good => ConsoleColor.Green,
+                Style.Bad => ConsoleColor.Red,
+                Style.Info => ConsoleColor.Cyan,
+                Style.Alert => ConsoleColor.Yellow,
+                Style.Update => ConsoleColor.Magenta,
+                _ => ConsoleColor.Gray
+            };
 
-        private void DiscordLog(string message, ConsoleColor color)
+            if (message != null)
+            {
+                Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm:ss}]");
+                Console.WriteLine($" {message}");
+                return;
+            }
+            
+            if (logMessage.Source == "Rest")
+            {
+                return;
+            }
+            
+            if (logMessage.Exception is CommandException cmdException)
+            {
+                Console.WriteLine($"[Command/{logMessage.Severity}] {cmdException.Command.Aliases.First()}"
+                                  + $" failed to execute in {cmdException.Context.Channel}.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(cmdException);
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm:ss}]");
+                Console.ForegroundColor = color;
+                Console.Write($" [{logMessage.Severity}/{logMessage.Source}]");
+                Console.ResetColor();
+                Console.WriteLine($" {logMessage.Message}");
+            }
+        }
+        
+        private void LogToDiscord(string message, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm:ss}]");
@@ -113,8 +126,8 @@
 
         private async Task ChannelCreated(SocketChannel channel)
         {
-            ConsoleLog($"Channel {channel} created", ConsoleColor.Cyan);
-            DiscordLog($"Channel {channel} created", ConsoleColor.Cyan);
+            // LogToConsole($"Channel {channel} created", ConsoleColor.Cyan);
+            // LogToDiscord($"Channel {channel} created", ConsoleColor.Cyan);
         }
 
         private async Task ChannelDestroyed(SocketChannel channel)
@@ -172,7 +185,7 @@
 
         private async Task Log(LogMessage logMessage)
         {
-            Neutral(logMessage.Message);
+            LogToConsole(style: Style.Info, logMessage: logMessage);
         }
 
         private async Task LoggedIn()
@@ -257,6 +270,44 @@
 
         private async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState voiceStateBefore, SocketVoiceState voiceStateAfter)
         {
+        }
+        
+        private async Task CommandLog(LogMessage logMessage)
+        {
+            LogToConsole(style: Style.Update, logMessage: logMessage);
+
+        }
+        
+        private async Task OnCommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
+        {
+            // Command failed. Notify user and log to console
+            if (!result.IsSuccess)
+            {
+                var cleanResult = ResultCleaner($"{result}");
+            
+                if (command.IsSpecified)
+                {
+                    await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(cleanResult));
+                    LogToConsole(style: Style.Alert, message: $"[Command Error] {context.User.Username}#{context.User.Discriminator} used {_config.Prefix}{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name} ({cleanResult})");
+                }
+                else
+                {
+                    await context.Channel.SendMessageAsync(embed: EmbedHandler.Bad(ResultCleaner($"{result}")));
+                    LogToConsole(style: Style.Bad, message: $"[Command Fail] {context.User.Username}#{context.User.Discriminator} used unknown command in {context.Guild.Name}: #{context.Channel.Name} ({cleanResult})");
+                }
+                return;
+            }
+            
+            // Command succeeded. Log to console
+            LogToConsole(style: Style.Good, message: $"[Command Success] {context.User.Username}#{context.User.Discriminator} used .{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name}");
+            return;
+        }
+
+        private string ResultCleaner(string result)
+        {
+            var indexOfSpace = $"{result}".IndexOf(' ');
+            var substringResult = $"{result}".Substring(indexOfSpace + 1);
+            return substringResult.Remove(substringResult.Length - 1);
         }
     }
 }

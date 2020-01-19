@@ -32,15 +32,8 @@
         // Task called to create command service
         public async Task InitializeAsync()
         {
-            HookEvents();
-            await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(), _services);
-        }
-
-        // Hook up events
-        private void HookEvents()
-        {
             _client.MessageReceived += OnMessageReceivedAsync;
-            _commands.CommandExecuted += OnCommandExecutedAsync;
+            await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(), _services);
         }
 
         private async Task OnMessageReceivedAsync(SocketMessage socketMessage)
@@ -67,38 +60,6 @@
             // Execute command with command context along with service provider for precondition checks
             // Result indicates an object stating if command executed successfully (not a return value)
             var result = await _commands.ExecuteAsync(context: context, argPos: argPos, services: _services);
-        }
-
-        public async Task OnCommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
-        {
-            // Command failed. Notify user and log to console
-            if (!result.IsSuccess)
-            {
-                var cleanResult = ResultCleaner($"{result}");
-
-                if (command.IsSpecified)
-                {
-                    await context.Channel.SendMessageAsync(embed: EmbedHandler.Alert(cleanResult));
-                    _logger.Alert($"[Command Error] {context.User.Username}#{context.User.Discriminator} used {_config.Prefix}{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name} ({cleanResult})");
-                }
-                else
-                {
-                    await context.Channel.SendMessageAsync(embed: EmbedHandler.Bad(ResultCleaner($"{result}")));
-                    _logger.Bad($"[Command Fail] {context.User.Username}#{context.User.Discriminator} used unknown command in {context.Guild.Name}: #{context.Channel.Name} ({cleanResult})");
-                }
-                return;
-            }
-
-            // Command succeeded. Log to console
-            _logger.Good($"[Command Success] {context.User.Username}#{context.User.Discriminator} used .{command.Value.Name} in {context.Guild.Name}: #{context.Channel.Name}");
-            return;
-        }
-
-        private string ResultCleaner(string result)
-        {
-            var indexOfSpace = $"{result}".IndexOf(' ');
-            var substringResult = $"{result}".Substring(indexOfSpace + 1);
-            return substringResult.Remove(substringResult.Length - 1);
         }
     }
 }
