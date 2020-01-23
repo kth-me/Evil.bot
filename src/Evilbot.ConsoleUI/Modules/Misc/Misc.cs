@@ -2,15 +2,15 @@
 using Discord.Addons.CommandsExtension;
 using Discord.Commands;
 using Discord.WebSocket;
-using Evil.bot.ConsoleApp.Handlers;
-using Evil.bot.ConsoleApp.Models;
-using Evil.bot.ConsoleApp.Preconditions;
+using Evilbot.ConsoleUI.Handlers;
+using Evilbot.ConsoleUI.Models;
+using Evilbot.ConsoleUI.Preconditions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Evil.bot.ConsoleApp.Modules.Misc
+namespace Evilbot.ConsoleUI.Modules.Misc
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {

@@ -1,4 +1,4 @@
-﻿namespace Evil.bot.ConsoleApp
+﻿namespace Evilbot.ConsoleUI
 {
     using System.Threading.Tasks;
 

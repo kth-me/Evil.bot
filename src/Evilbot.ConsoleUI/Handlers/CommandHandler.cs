@@ -1,9 +1,9 @@
-﻿namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evilbot.ConsoleUI.Handlers
 {
     using Discord;
     using Discord.Commands;
     using Discord.WebSocket;
-    using Evil.bot.ConsoleApp.Models;
+    using Evilbot.ConsoleUI.Models;
     using System;
     using System.Reflection;
     using System.Threading.Tasks;

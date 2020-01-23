@@ -1,10 +1,10 @@
-﻿namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evilbot.ConsoleUI.Handlers
 {
     using System;
     using System.IO;
     using System.Text;
 
-    using Evil.bot.ConsoleApp.Models;
+    using Evilbot.ConsoleUI.Models;
 
     using Newtonsoft.Json;
 

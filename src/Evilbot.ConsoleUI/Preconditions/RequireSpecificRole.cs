@@ -1,4 +1,4 @@
-﻿namespace Evil.bot.ConsoleApp.Preconditions
+﻿namespace Evilbot.ConsoleUI.Preconditions
 {
     using System;
     using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace Evil.bot.ConsoleApp.Handlers
+﻿namespace Evilbot.ConsoleUI.Handlers
 {
     using System;
 

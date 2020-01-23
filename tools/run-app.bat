@@ -1,7 +1,7 @@
 @echo off
 
 for %%G in ("%~dp0\..") do set repoName=%%~nxG
-set startUpProject="ConsoleApp"
+set startUpProject="ConsoleUI"
 
 :BeginProcess
 cd /d "..\src\%repoName%.%startUpProject%"

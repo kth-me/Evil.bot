@@ -1,16 +1,16 @@
-﻿namespace Evil.bot.ConsoleApp
+﻿namespace Evilbot.ConsoleUI
 {
     using System;
     using System.Threading.Tasks;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Discord;
     using Discord.Commands;
     using Discord.WebSocket;
 
-    using Evil.bot.ConsoleApp.Handlers;
-    using Evil.bot.ConsoleApp.Models;
-
-    using Microsoft.Extensions.DependencyInjection;
+    using Handlers;
+    using Models;
 
     internal class Client
     {
