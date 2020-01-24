@@ -1,4 +1,4 @@
-﻿namespace Evilbot.ConsoleUI.Models
+﻿namespace Evilbot.Common.Models
 {
     public class ConfigModel
     {

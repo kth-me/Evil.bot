@@ -1,24 +1,45 @@
-﻿using Discord;
-using Discord.Addons.CommandsExtension;
-using Discord.Commands;
-using Discord.WebSocket;
-using Evilbot.ConsoleUI.Handlers;
-using Evilbot.ConsoleUI.Models;
-using Evilbot.ConsoleUI.Preconditions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Discord;
+using Discord.Addons.CommandsExtension;
+using Discord.Commands;
+using Discord.WebSocket;
+using Evilbot.Common;
+using Evilbot.Common.Models;
+using Evilbot.Common.Preconditions;
 
-namespace Evilbot.ConsoleUI.Modules.Misc
+namespace Evilbot.MiscPlugin
 {
-    public class Misc : ModuleBase<SocketCommandContext>
+    public class Misc : ModuleBase<SocketCommandContext>, IPlugin
     {
+        public string Name
+        {
+            get { return "MiscPlugin"; }
+        }
+
+        public string Explanation
+        {
+            
+            get { return "Test Plugin."; }
+        }
+        
+        // public void Go()
+        // {
+        //     Console.WriteLine($"{Name} loaded.");
+        // }
+        
         private readonly ConfigModel _config;
+        private readonly CommandService _commandService;
+        
         public DiscordSocketClient Client { get; set; }
 
-        private readonly CommandService _commandService;
-
+        public Misc()
+        {
+            _config ??= new ConfigHandler().GetConfig();
+        }
+        
         public Misc(CommandService commandService)
         {
             _commandService = commandService;
@@ -125,16 +146,18 @@ namespace Evilbot.ConsoleUI.Modules.Misc
         //     await ReplyAsync(DataHandler.GetAlert("SECRET"));
         // }
 
-        private bool UserIsSecretRole(SocketGuildUser user)
-        {
-            var targetRoleName = "SecretRole";
-            var result = from r in user.Guild.Roles
-                         where r.Name == targetRoleName
-                         select r.Id;
-            var roleID = result.FirstOrDefault();
-            if (roleID == 0) return false;
-            var targetRole = user.Guild.GetRole(roleID);
-            return user.Roles.Contains(targetRole);
-        }
+        // private bool UserIsSecretRole(SocketGuildUser user)
+        // {
+        //     var targetRoleName = "SecretRole";
+        //     var result = from r in user.Guild.Roles
+        //                  where r.Name == targetRoleName
+        //                  select r.Id;
+        //     var roleID = result.FirstOrDefault();
+        //     if (roleID == 0) return false;
+        //     var targetRole = user.Guild.GetRole(roleID);
+        //     return user.Roles.Contains(targetRole);
+        // }
+
+        
     }
 }

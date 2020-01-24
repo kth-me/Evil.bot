@@ -1,13 +1,12 @@
-﻿namespace Evilbot.ConsoleUI.Handlers
-{
-    using Discord;
-    using Discord.Commands;
-    using Discord.WebSocket;
-    using Evilbot.ConsoleUI.Models;
-    using System;
-    using System.Reflection;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Reflection;
+using System.Threading.Tasks;
+using Discord.Commands;
+using Discord.WebSocket;
+using Evilbot.Common.Models;
 
+namespace Evilbot.Common
+{
     public class CommandHandler
     {
         private readonly DiscordSocketClient _client;

@@ -19,4 +19,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Evilbot.Common\Evilbot.Common.csproj" />
+  </ItemGroup>
 </Project>

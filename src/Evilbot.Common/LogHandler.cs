@@ -1,14 +1,13 @@
-﻿
-namespace Evilbot.ConsoleUI.Handlers
-{
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Discord;
-    using Discord.WebSocket;
-    using Discord.Commands;
-    using Models;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
+using Evilbot.Common.Models;
 
+namespace Evilbot.Common
+{
     public class LogHandler
     {
         private readonly DiscordSocketClient _client;

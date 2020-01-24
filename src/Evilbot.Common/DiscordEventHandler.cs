@@ -1,14 +1,12 @@
-﻿namespace Evilbot.ConsoleUI.Handlers
+﻿using System;
+using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
+using Evilbot.Common.Models;
+
+namespace Evilbot.Common
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using Discord;
-    using Discord.WebSocket;
-    using Discord.Commands;
-
-    using Evilbot.ConsoleUI.Models;
-
     /// <summary>
     /// Put your subscriptions to events here!
     /// Just one non awaited async Method per functionality you want to provide

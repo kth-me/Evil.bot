@@ -1,12 +1,11 @@
-﻿namespace Evilbot.ConsoleUI.Preconditions
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Discord.Commands;
+using Discord.WebSocket;
+
+namespace Evilbot.Common.Preconditions
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Discord.Commands;
-    using Discord.WebSocket;
-
     // Inherit from PreconditionAttribute
     public class RequireSpecificRole : PreconditionAttribute
     {

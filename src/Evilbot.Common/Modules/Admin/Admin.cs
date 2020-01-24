@@ -1,6 +1,6 @@
 ﻿using Discord.Commands;
 
-namespace Evilbot.ConsoleUI.Modules.Admin
+namespace Evilbot.Common.Modules.Admin
 {
     public class Admin : ModuleBase<SocketCommandContext>
     {

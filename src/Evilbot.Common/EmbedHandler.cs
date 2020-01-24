@@ -1,10 +1,8 @@
-﻿namespace Evilbot.ConsoleUI.Handlers
+﻿using Discord;
+using Discord.WebSocket;
+
+namespace Evilbot.Common
 {
-    using System;
-
-    using Discord;
-    using Discord.WebSocket;
-
     public class EmbedHandler
     {
         //public EmbedHandler(

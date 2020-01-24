@@ -1,14 +1,12 @@
-﻿namespace Evilbot.ConsoleUI.Handlers
+﻿using System;
+using System.IO;
+using System.Text;
+using Evilbot.Common.Models;
+using Newtonsoft.Json;
+
+namespace Evilbot.Common
 {
-    using System;
-    using System.IO;
-    using System.Text;
-
-    using Evilbot.ConsoleUI.Models;
-
-    using Newtonsoft.Json;
-
-    internal class ConfigHandler
+    public class ConfigHandler
     {
         private const string _dataDirectory = "Data";
         private const string _configFile = "config.json";

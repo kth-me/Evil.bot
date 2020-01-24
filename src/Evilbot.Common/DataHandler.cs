@@ -1,10 +1,9 @@
-﻿namespace Evilbot.ConsoleUI.Handlers
+﻿using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
+namespace Evilbot.Common
 {
-    using System.Collections.Generic;
-    using System.IO;
-
-    using Newtonsoft.Json;
-
     internal class DataHandler
     {
         private static readonly Dictionary<string, string> _alerts;
