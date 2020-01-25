@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
-namespace Evilbot.Common
+namespace Evilbot.Common.Plugins
 {
     public class PluginLoader
     {
         public static List<IPlugin> Plugins { get; set; }
 
-        public async Task LoadPlugins()
+        public void LoadPlugins()
         {
             Plugins = new List<IPlugin>();
 
-            // Load DLLs from Plugins directory
+            // Load assemblies from Plugins directory
             if (Directory.Exists("Plugins"))
             {
                 string[] files = Directory.GetFiles("Plugins");
@@ -28,15 +28,16 @@ namespace Evilbot.Common
                 }
             }
 
-            Type interfaceType = typeof(IPlugin);
             // Fetch all types that implement the interface IPlugin and are a class
+            Type interfaceType = typeof(IPlugin);
             Type[] types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(p => interfaceType.IsAssignableFrom(p) && p.IsClass)
                 .ToArray();
+            
+            // Create new instance of all found types
             foreach (Type type in types)
             {
-                // Create new instance of all found types
                 Plugins.Add((IPlugin)Activator.CreateInstance(type));
             }
         }

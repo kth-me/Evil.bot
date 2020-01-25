@@ -5,8 +5,9 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Evilbot.Common.Models;
+using Evilbot.ConsoleUI;
 
-namespace Evilbot.Common
+namespace Evilbot.Common.Logging
 {
     public class LogHandler
     {

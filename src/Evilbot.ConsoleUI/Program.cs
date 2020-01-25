@@ -1,4 +1,6 @@
-﻿namespace Evilbot.ConsoleUI
+﻿using Evilbot.Common;
+
+namespace Evilbot.ConsoleUI
 {
     using System.Threading.Tasks;
 

@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-
-using Evilbot.Common;
+using Evilbot.Common.Commands;
+using Evilbot.Common.Logging;
 using Evilbot.Common.Models;
+using Evilbot.Common.Plugins;
+using Evilbot.ConsoleUI;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Evilbot.ConsoleUI
+namespace Evilbot.Common
 {
-    internal class Client
+    public class Client
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly ConfigModel _config;
-        private readonly PluginLoader _pluginLoader;
-
         //private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 
-        public Client(CommandService commands = null, ConfigModel config = null, LogHandler logger = null, PluginLoader pluginLoader = null)
+        public Client(CommandService commands = null, ConfigModel config = null, LogHandler logger = null, PluginHandler plugins = null)
         {
             // Create new DiscordClient
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -48,9 +47,9 @@ namespace Evilbot.ConsoleUI
         public async Task InitializeAsync()
         {
             // Initialize CommandHandler, LogHandler, and DiscordEventHandler services
+            await _services.GetRequiredService<PluginHandler>().InitializeAsync();
             await _services.GetRequiredService<CommandHandler>().InitializeAsync();
             await _services.GetRequiredService<LogHandler>().InitializeAsync();
-            await _services.GetRequiredService<PluginLoader>().LoadPlugins();
             await _services.GetRequiredService<DiscordEventHandler>().InitializeAsync();
 
             // Login with client and start
@@ -68,9 +67,9 @@ namespace Evilbot.ConsoleUI
             return new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
+                .AddSingleton<PluginHandler>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LogHandler>()
-                .AddSingleton<PluginLoader>()
                 .AddSingleton<DiscordEventHandler>()
                 .AddSingleton<ConfigHandler>()
                 .BuildServiceProvider();

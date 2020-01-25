@@ -1,67 +1,24 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Addons.CommandsExtension;
 using Discord.Commands;
 using Discord.WebSocket;
-using Evilbot.Common;
 using Evilbot.Common.Models;
-using Evilbot.Common.Preconditions;
+using Evilbot.ConsoleUI;
 
-namespace Evilbot.MiscPlugin
+namespace Evilbot.Common.Commands
 {
-    public class Misc : ModuleBase<SocketCommandContext>, IPlugin
+    public class Misc : ModuleBase<SocketCommandContext>
     {
-        public string Name
-        {
-            get { return "MiscPlugin"; }
-        }
-
-        public string Explanation
-        {
-            
-            get { return "Test Plugin."; }
-        }
-        
-        // public void Go()
-        // {
-        //     Console.WriteLine($"{Name} loaded.");
-        // }
-        
         private readonly ConfigModel _config;
         private readonly CommandService _commandService;
-        
-        public DiscordSocketClient Client { get; set; }
-
-        public Misc()
-        {
-            _config ??= new ConfigHandler().GetConfig();
-        }
         
         public Misc(CommandService commandService)
         {
             _commandService = commandService;
             _config ??= new ConfigHandler().GetConfig();
-        }
-
-        public SocketGuild Guild
-        {
-            get
-            {
-                var guild = Client.GetGuild(446832659377946625);
-                return guild;
-            }
-        }
-
-        public SocketTextChannel LogChannel
-        {
-            get
-            {
-                var channel = Guild.GetTextChannel(Convert.ToUInt64(_config.LogChannelId));
-                return channel;
-            }
         }
 
         [Command("help"), Summary("Show help menu")]
@@ -73,13 +30,6 @@ namespace Evilbot.MiscPlugin
 
         [Command("echo"), Summary("Repeat entered text")]
         public async Task Echo([Remainder]string message)
-        {
-            await Context.Channel.SendMessageAsync($">>> {message}");
-        }
-
-        [Command("test"), Summary("Repeat entered text")]
-        [RequireSpecificRole("*Staff")]
-        public async Task Test([Remainder]string message)
         {
             await Context.Channel.SendMessageAsync($">>> {message}");
         }

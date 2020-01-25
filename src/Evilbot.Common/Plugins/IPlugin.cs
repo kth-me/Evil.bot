@@ -1,4 +1,4 @@
-namespace Evilbot.Common
+namespace Evilbot.Common.Plugins
 {
     public interface IPlugin
     {
@@ -6,6 +6,6 @@ namespace Evilbot.Common
 
         string Explanation { get; }
 
-        // void Go();
+        void StartPlugin();
     }
 }

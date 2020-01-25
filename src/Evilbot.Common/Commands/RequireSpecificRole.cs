@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace Evilbot.Common.Preconditions
+namespace Evilbot.Common.Commands
 {
     // Inherit from PreconditionAttribute
     public class RequireSpecificRole : PreconditionAttribute

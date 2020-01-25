@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Evilbot.Common;
+using Evilbot.Common.Logging;
 using Evilbot.Common.Models;
 
-namespace Evilbot.Common
+namespace Evilbot.ConsoleUI
 {
     /// <summary>
     /// Put your subscriptions to events here!

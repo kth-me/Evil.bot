@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 
-namespace Evilbot.Common
+namespace Evilbot.ConsoleUI
 {
     public class EmbedHandler
     {

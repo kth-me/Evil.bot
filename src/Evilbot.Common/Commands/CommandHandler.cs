@@ -1,11 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using Evilbot.Common;
+using Evilbot.Common.Logging;
 using Evilbot.Common.Models;
+using Evilbot.Common.Plugins;
 
-namespace Evilbot.Common
+namespace Evilbot.Common.Commands
 {
     public class CommandHandler
     {
@@ -32,7 +36,22 @@ namespace Evilbot.Common
         public async Task InitializeAsync()
         {
             _client.MessageReceived += OnMessageReceivedAsync;
-            await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(), _services);
+            
+            // Load common commands
+            await _commands.AddModulesAsync(assembly: Assembly.GetExecutingAssembly(), _services);
+
+            // Load plugin commands
+            if (Directory.Exists("Plugins"))
+            {
+                var files = Directory.GetFiles("Plugins");
+                foreach (var file in files)
+                {
+                    if (file.EndsWith(".dll"))
+                    {
+                        await _commands.AddModulesAsync(Assembly.LoadFile(Path.GetFullPath(file)), _services);
+                    }
+                }
+            }
         }
 
         private async Task OnMessageReceivedAsync(SocketMessage socketMessage)

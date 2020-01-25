@@ -18,8 +18,15 @@
     <None Update="Data\data.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Remove="Data\**" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Evilbot.Common\Evilbot.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Data\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Data\**" />
   </ItemGroup>
 </Project>
