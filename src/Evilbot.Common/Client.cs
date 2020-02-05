@@ -17,7 +17,6 @@ namespace Evilbot.Common
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly ConfigModel _config;
-        //private readonly LogHandler _logger;
         private readonly IServiceProvider _services;
 
         public Client(CommandService commands = null, ConfigModel config = null, LogHandler logger = null, PluginHandler plugins = null)
@@ -40,7 +39,6 @@ namespace Evilbot.Common
 
             // Set up config and services for use in initialization
             _config = config ?? new ConfigHandler().GetConfig();
-            //_logger = logger ?? new LogHandler();
             _services = ConfigureServices();
         }
 

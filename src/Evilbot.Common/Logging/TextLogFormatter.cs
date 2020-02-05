@@ -5,7 +5,7 @@ using Discord.Commands;
 
 namespace Evilbot.Common.Logging
 {
-    public class ConsoleLogger : IEventLogger
+    public class TextLogFormatter
     {
         public void Log(LogStyle logStyle, string message = null, LogMessage logMessage = new LogMessage())
         {
@@ -18,10 +18,24 @@ namespace Evilbot.Common.Logging
                 LogStyle.Update => ConsoleColor.Magenta,
                 _ => ConsoleColor.Gray
             };
+            
+            var style = logStyle switch
+            {
+                LogStyle.Good => "Good",
+                LogStyle.Bad => "Bad",
+                LogStyle.Info => "Info",
+                LogStyle.Alert => "Alert",
+                LogStyle.Update => "Update",
+                _ => "Neutral"
+            };
+
 
             if (message != null)
             {
                 Console.Write($"[{DateTime.Now:dd/M/yyyy HH:mm:ss}]");
+                Console.ForegroundColor = color;
+                Console.Write($" [{style}]");
+                Console.ResetColor();
                 Console.WriteLine($" {message}");
                 return;
             }
